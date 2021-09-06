@@ -1,1 +1,1 @@
-console.log("work");
+(()=>{const e=document.querySelector(".view-more");let t=document.querySelector(".more");const o=document.querySelector(".projects"),n=document.querySelector(".projects-folder");e.addEventListener("click",(()=>{"expand_more"==t.textContent?t.textContent="expand_less":t.textContent="expand_more",o.classList.toggle("visiblity"),n.classList.toggle("overflow"),n.classList.toggle("overflowHidden")}))})();

@@ -5,9 +5,41 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>todo list app</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-    <h1>work</h1>
+    <nav class="nav">
+        <div class="nav-inbox">
+            <span class="material-icons">menu</span>
+            <span class="material-icons">inbox</span>
+        </div>
+        <div class="nav-done">
+            <span class="material-icons">add</span>
+            <span class="material-icons">done</span>
+        </div>
+    </nav>
+    <div class="main">
+        <div class="overflow projects-folder">
+            <div class="inbox">
+                <p><span class="material-icons">inbox</span>inbox</p>
+            </div>
+            <div class="view-more">
+                <p><span class="material-icons">folder_open</span>projects</p>
+                <p><span class="more material-icons">expand_more</span></p>
+            </div>
+            <div class="projects">
+                <p>project1</p>
+                <p>project2</p>
+                <p>project3</p>
+                <p>project4</p>
+                <p>project5</p>
+            </div>
+        </div>
+        <div class="projects-content">
+            <p>test</p>
+        </div>
+    </div>
 
     <script src="main.js"></script>
 </body>
