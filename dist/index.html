@@ -15,7 +15,7 @@
             <span class="material-icons">inbox</span>
         </div>
         <div class="nav-done">
-            <span class="material-icons">add</span>
+            <span class="addNav material-icons">add</span>
             <span class="material-icons">done</span>
         </div>
     </nav>
@@ -28,16 +28,56 @@
                 <p><span class="material-icons">folder_open</span>projects</p>
                 <p><span class="more material-icons">expand_more</span></p>
             </div>
-            <div class="projects">
-                <p>project1</p>
-                <p>project2</p>
-                <p>project3</p>
-                <p>project4</p>
-                <p>project5</p>
+            <div class="visiblity projects">
+                <div class="root"></div>
+                <div class="addItem">
+                    <span class="material-icons">add</span>
+                    <p>new project</p>
+                </div>
             </div>
         </div>
-        <div class="projects-content">
-            <p>test</p>
+        <div class="projects-content"></div>
+    </div>
+    <div class="visiblity addProject">
+        <div>
+            <h1>New project</h1>
+            <span class="close material-icons">close</span>
+        </div>
+        <form>
+            <label>Project name:</label>
+            <input class="addProjectInput" type="text">
+        </form>
+        <div class="button-space">
+            <button class="add">add</button>
+        </div>
+    </div>
+    <div class="visiblity addtasks">
+        <div class="closeTasks">
+            <h1>New tasks</h1>
+            <span class="closeTasksClick material-icons">close</span>
+        </div>
+        <form>
+            <div class="one">
+                <label>name:</label>
+                <input class="nameTasks" type="text">
+
+                <label>description:</label>
+                <input class="descriptiontasks" type="area">
+            </div>
+            <div class="two">
+                <label>date:</label>
+                <input class="dateTasks" type="date">
+
+                <label for="priority">priority</label>
+                <select class="priorityTasksInput" id="priority" name="priority">
+                    <option value="low">low</option>
+                    <option value="medium">medium</option>
+                    <option value="high">high</option>
+                </select>
+            </div>
+        </form>
+        <div class="button-space">
+            <button class="addTasksButton">add</button>
         </div>
     </div>
 
