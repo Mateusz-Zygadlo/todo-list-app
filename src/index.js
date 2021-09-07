@@ -10,6 +10,7 @@ const newArr = [
     }
 ];
 let nowProject;
+let count;
 
 const addItem = document.querySelector('.addItem');
 const addProject = document.querySelector('.addProject');
@@ -57,6 +58,7 @@ addTasksButton.addEventListener('click', () => {
                     date: dateTasks.value,
                     priority: priorityTasksInput.value,
                 })
+                count = i;
             }
         }
     }else{
@@ -66,7 +68,11 @@ addTasksButton.addEventListener('click', () => {
             date: dateTasks.value,
             priority: priorityTasksInput.value,
         })
+
+        count = 0;
     }
+
+    createDiv();
 
     nameTasks.value = '';
     descriptiontasks.value = '';
@@ -82,11 +88,17 @@ document.addEventListener('click', (e) => {
     if(e.target.classList.contains('projectsNameInPage')){
         for(let i = 0; i < newArr.length; i++){
             if(newArr[i].name == e.target.textContent){
-                console.log(newArr[i].name);
-                console.log(newArr[i].tasks);
                 nowProject = newArr[i].name;
             }
         }
+    }else if(e.target.classList.contains('tasks')){
+        const moreContentDiv = document.querySelector('.moreContent');
+        const tasks = document.querySelector('.tasks');
+
+        tasks.addEventListener('click', () => {
+            moreContentDiv.classList.toggle('visiblity');
+        })
+        
     }else{
         return;
     }
@@ -112,7 +124,8 @@ addNewProject.addEventListener('click', () => {
     addToPageNameProject();
 })
 
-const addTaskInMainPage = () => {
+const createDiv = () => {
+
     const manyProjects = document.createElement('div');
     manyProjects.classList.add('manyProjects');
 
@@ -232,5 +245,3 @@ viewMore.addEventListener('click', () => {
 })
 
 console.log(Math.random() * 100);
-
-addTaskInMainPage();
