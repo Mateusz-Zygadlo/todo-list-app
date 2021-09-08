@@ -3,12 +3,7 @@ const more = document.querySelector('.more');
 const projectsDiv = document.querySelector('.projects');
 const projectFolder = document.querySelector('.projects-folder');
 
-const newArr = [
-    {
-        name: 'inbox',
-        tasks: [],
-    }
-];
+const newArr = [{ name: 'inbox', tasks: [] }];
 let nowProject;
 let count;
 
@@ -22,6 +17,8 @@ const addProjectInput = document.querySelector('.addProjectInput');
 
 const root = document.querySelector('.root');
 let projectsNameInPage = document.querySelectorAll('.projectsNameInPage');
+
+const inboxClick = document.querySelector('.inboxClick');
 
 
 const nameTasks = document.querySelector('.nameTasks');
@@ -57,16 +54,19 @@ addTasksButton.addEventListener('click', () => {
                     decription: descriptiontasks.value,
                     date: dateTasks.value,
                     priority: priorityTasksInput.value,
+                    id: Math.floor(Math.random() * 1000),
                 })
                 count = i;
             }
         }
     }else{
+        nowProject = 'inbox';
         newArr[0].tasks.push({
             name: nameTasks.value,
             decription: descriptiontasks.value,
             date: dateTasks.value,
             priority: priorityTasksInput.value,
+            id: Math.floor(Math.random() * 1000),
         })
 
         count = 0;
@@ -74,14 +74,18 @@ addTasksButton.addEventListener('click', () => {
 
     createDiv();
 
-    nameTasks.value = '';
-    descriptiontasks.value = '';
-    dateTasks.value = '';
-    priorityTasksInput.value = '';
-
-    addtasks.classList.toggle('visiblity');
     console.log(newArr);
     console.log(nowProject);
+
+    nameTasks.value = '';
+    descriptiontasks.value = '';
+
+    addtasks.classList.toggle('visiblity');
+})
+
+inboxClick.addEventListener('click', () => {
+    nowProject = 'inbox';
+    createDiv();
 })
 
 document.addEventListener('click', (e) => {
@@ -102,6 +106,8 @@ document.addEventListener('click', (e) => {
     }else{
         return;
     }
+
+    createDiv();
 })
 
 addItem.addEventListener('click', () => {
@@ -118,100 +124,116 @@ addNewProject.addEventListener('click', () => {
         name: addProjectInput.value,
         tasks: [],
     })
-    console.log(newArr);
+    nowProject = addProjectInput.value;
     addProjectInput.value = '';
     addProject.classList.add('visiblity');
     addToPageNameProject();
+    createDiv();
 })
 
 const createDiv = () => {
 
-    const manyProjects = document.createElement('div');
-    manyProjects.classList.add('manyProjects');
+    let index;
+    projectsContent.textContent = '';
 
-    const divTasks = document.createElement('div');
-    divTasks.classList.add('tasks');
+    for(let i = 0; i < newArr.length; i++){
+        if(newArr[i].name == nowProject){
+            index = i;
+        }
+    }
 
-    const nameAndPriority = document.createElement('div');
-    nameAndPriority.classList.add('name-and-priority');
+    for(let j = 0; j < newArr[index].tasks.length; j++){
 
-    const priority = document.createElement('div');
-    priority.classList.add('priority');
+        const manyProjects = document.createElement('div');
+        manyProjects.dataset.id = newArr[index].tasks[j].id;
+        manyProjects.classList.add('manyProjects');
 
-    nameAndPriority.appendChild(priority);
+        const divTasks = document.createElement('div');
+        divTasks.classList.add('tasks');
 
-    const checkbox = document.createElement('div');
-    checkbox.classList.add('checkbox');
+        const nameAndPriority = document.createElement('div');
+        nameAndPriority.classList.add('name-and-priority');
 
-    const checkboxInput = document.createElement('input');
-    checkboxInput.type = 'checkbox';
+        const priority = document.createElement('div');
+        priority.classList.add('priority');
 
-    checkbox.appendChild(checkboxInput);
+        nameAndPriority.appendChild(priority);
 
-    nameAndPriority.appendChild(checkbox);
+        const checkbox = document.createElement('div');
+        checkbox.classList.add('checkbox');
 
-    const name = document.createElement('div');
-    name.textContent = 'testName';
-    name.classList.add('name');
+        const checkboxInput = document.createElement('input');
+        checkboxInput.type = 'checkbox';
 
-    nameAndPriority.appendChild(name);
+        checkbox.appendChild(checkboxInput);
 
-    divTasks.appendChild(nameAndPriority);
+        nameAndPriority.appendChild(checkbox);
 
-    const deleteDiv = document.createElement('div');
-    deleteDiv.classList.add('delete');
+        const name = document.createElement('div');
+        name.textContent = newArr[index].tasks[j].name;
+        name.classList.add('name');
 
-    const materialIconsDelete = document.createElement('span');
-    materialIconsDelete.classList.add('material-icons');
-    materialIconsDelete.textContent = 'delete';
+        nameAndPriority.appendChild(name);
 
-    deleteDiv.appendChild(materialIconsDelete);
+        divTasks.appendChild(nameAndPriority);
+
+        const deleteDiv = document.createElement('div');
+        deleteDiv.classList.add('delete');
+
+        const materialIconsDelete = document.createElement('span');
+        materialIconsDelete.classList.add('material-icons');
+        materialIconsDelete.textContent = 'delete';
+
+        deleteDiv.appendChild(materialIconsDelete);
     
-    divTasks.appendChild(deleteDiv);
+        divTasks.appendChild(deleteDiv);
 
-    manyProjects.appendChild(divTasks);
+        manyProjects.appendChild(divTasks);
 
-    const moreContent = document.createElement('div');
-    moreContent.classList.add('moreContent');
-    moreContent.classList.add('visiblity');
+        const moreContent = document.createElement('div');
+        moreContent.classList.add('moreContent');
 
-    const nameProjectAndDescription = document.createElement('div');
-    nameProjectAndDescription.classList.add('nameProject-and-description');
+        const nameProjectAndDescription = document.createElement('div');
+        nameProjectAndDescription.classList.add('nameProject-and-description');
 
-    const nameProjectTwo = document.createElement('div');
-    nameProjectTwo.textContent = 'test name two';
-    nameProjectTwo.classList.add('nameProject');
+        const nameProjectTwo = document.createElement('div');
+        nameProjectTwo.textContent = `name: ${newArr[index].tasks[j].name}`;
+        nameProjectTwo.classList.add('nameProject');
 
-    nameProjectAndDescription.appendChild(nameProjectTwo);
+        nameProjectAndDescription.appendChild(nameProjectTwo);
 
-    const descriptionTwo = document.createElement('div');
-    descriptionTwo.textContent = 'test description';
-    descriptionTwo.classList.add('descriptionProject');
+        const descriptionTwo = document.createElement('div');
+        descriptionTwo.textContent = `description: ${newArr[index].tasks[j].decription}`;
+        descriptionTwo.classList.add('descriptionProject');
 
-    nameProjectAndDescription.appendChild(descriptionTwo);
+        nameProjectAndDescription.appendChild(descriptionTwo);
 
-    moreContent.appendChild(nameProjectAndDescription);
+        moreContent.appendChild(nameProjectAndDescription);
 
-    const dateAndPriority = document.createElement('div');
-    dateAndPriority.classList.add('date-and-priority');
+        const dateAndPriority = document.createElement('div');
+        dateAndPriority.classList.add('date-and-priority');
 
-    const dateProject = document.createElement('div');
-    dateAndPriority.textContent = 'test date';
-    dateProject.classList.add('dateProject');
+        const dateProject = document.createElement('div');
+        dateAndPriority.textContent = `date: ${newArr[index].tasks[j].date}`;
+        dateProject.classList.add('dateProject');
 
-    dateAndPriority.appendChild(dateProject);
+        dateAndPriority.appendChild(dateProject);
 
-    const priorityProject = document.createElement('div');
-    priorityProject.textContent = 'test priority';
-    priorityProject.classList.add('priorityProject');
+        const priorityProject = document.createElement('div');
+        priorityProject.textContent = `priority: ${newArr[index].tasks[j].priority}`;
+        priorityProject.classList.add('priorityProject');
 
-    dateAndPriority.appendChild(priorityProject);
+        dateAndPriority.appendChild(priorityProject);
 
-    moreContent.appendChild(dateAndPriority);
+        moreContent.appendChild(dateAndPriority);
 
-    manyProjects.appendChild(moreContent);
+        manyProjects.appendChild(moreContent);
 
-    projectsContent.appendChild(manyProjects);
+        projectsContent.appendChild(manyProjects);
+    }
+
+    console.log(newArr[index].tasks.length);
+
 }
 
 const addToPageNameProject = () => {
@@ -243,5 +265,3 @@ viewMore.addEventListener('click', () => {
     projectFolder.classList.toggle('overflow');
     projectFolder.classList.toggle('overflowHidden');
 })
-
-console.log(Math.random() * 100);
