@@ -2,6 +2,9 @@ const viewMore = document.querySelector('.view-more');
 const more = document.querySelector('.more');
 const projectsDiv = document.querySelector('.projects');
 const projectFolder = document.querySelector('.projects-folder');
+const menu = document.querySelector('.menu');
+
+const inboxMain = document.querySelector('.inbox');
 
 const newArr = [{ name: 'inbox', tasks: [] }];
 let nowProject;
@@ -20,7 +23,6 @@ let projectsNameInPage = document.querySelectorAll('.projectsNameInPage');
 
 const inboxClick = document.querySelector('.inboxClick');
 
-
 const nameTasks = document.querySelector('.nameTasks');
 const descriptiontasks = document.querySelector('.descriptiontasks');
 const dateTasks = document.querySelector('.dateTasks');
@@ -33,6 +35,15 @@ const addTasksButton = document.querySelector('.addTasksButton');
 
 const projectsContent = document.querySelector('.projects-content');
 
+inboxMain.addEventListener('click', () => {
+    nowProject = 'inbox';
+    createDiv();
+})
+
+menu.addEventListener('click', () => {
+   projectFolder.classList.toggle('z-index-toggle');
+})
+
 closeTasksClick.addEventListener('click', () => {
     nameTasks.value = '';
     descriptiontasks.value = '';
@@ -43,6 +54,7 @@ closeTasksClick.addEventListener('click', () => {
 
 addNav.addEventListener('click', () => {
     addtasks.classList.toggle('visiblity');
+    projectFolder.classList.remove('z-index-toggle');
 })
 
 addTasksButton.addEventListener('click', () => {
@@ -112,6 +124,7 @@ document.addEventListener('click', (e) => {
 
 addItem.addEventListener('click', () => {
     addProject.classList.toggle('visiblity');
+    projectFolder.classList.remove('z-index-toggle');
 })
 
 closeNewProject.addEventListener('click', () => {
@@ -129,6 +142,7 @@ addNewProject.addEventListener('click', () => {
     addProject.classList.add('visiblity');
     addToPageNameProject();
     createDiv();
+    addDiv();
 })
 
 const createDiv = () => {
@@ -145,10 +159,10 @@ const createDiv = () => {
     for(let j = 0; j < newArr[index].tasks.length; j++){
 
         const manyProjects = document.createElement('div');
-        manyProjects.dataset.id = newArr[index].tasks[j].id;
         manyProjects.classList.add('manyProjects');
 
         const divTasks = document.createElement('div');
+        divTasks.dataset.id = newArr[index].tasks[j].id;
         divTasks.classList.add('tasks');
 
         const nameAndPriority = document.createElement('div');
@@ -190,50 +204,71 @@ const createDiv = () => {
 
         manyProjects.appendChild(divTasks);
 
-        const moreContent = document.createElement('div');
-        moreContent.classList.add('moreContent');
-
-        const nameProjectAndDescription = document.createElement('div');
-        nameProjectAndDescription.classList.add('nameProject-and-description');
-
-        const nameProjectTwo = document.createElement('div');
-        nameProjectTwo.textContent = `name: ${newArr[index].tasks[j].name}`;
-        nameProjectTwo.classList.add('nameProject');
-
-        nameProjectAndDescription.appendChild(nameProjectTwo);
-
-        const descriptionTwo = document.createElement('div');
-        descriptionTwo.textContent = `description: ${newArr[index].tasks[j].decription}`;
-        descriptionTwo.classList.add('descriptionProject');
-
-        nameProjectAndDescription.appendChild(descriptionTwo);
-
-        moreContent.appendChild(nameProjectAndDescription);
-
-        const dateAndPriority = document.createElement('div');
-        dateAndPriority.classList.add('date-and-priority');
-
-        const dateProject = document.createElement('div');
-        dateAndPriority.textContent = `date: ${newArr[index].tasks[j].date}`;
-        dateProject.classList.add('dateProject');
-
-        dateAndPriority.appendChild(dateProject);
-
-        const priorityProject = document.createElement('div');
-        priorityProject.textContent = `priority: ${newArr[index].tasks[j].priority}`;
-        priorityProject.classList.add('priorityProject');
-
-        dateAndPriority.appendChild(priorityProject);
-
-        moreContent.appendChild(dateAndPriority);
-
-        manyProjects.appendChild(moreContent);
-
         projectsContent.appendChild(manyProjects);
     }
+}
 
-    console.log(newArr[index].tasks.length);
+let indexMainOne;
+let indexMainTwo;
 
+document.addEventListener('click', (e) => {
+    if(e.target.classList.contains('tasks')){
+        let indexMain = e.target.dataset.id;
+
+        for(let i = 0; i < newArr.length; i++){
+            if(newArr[i].name == nowProject){
+                indexMainOne = i;
+            }
+        }
+        for(let j = 0; j < newArr[indexMainOne].tasks.length; j++){
+            if(newArr[indexMainOne].tasks[j].id == indexMain){
+                indexMainTwo = j;
+            }
+        }
+
+        addDiv();
+    }
+})
+
+const addDiv = () => {
+    const moreContent = document.createElement('div');
+    moreContent.classList.add('moreContent');
+
+    const nameProjectAndDescription = document.createElement('div');
+    nameProjectAndDescription.classList.add('nameProject-and-description');
+
+    const nameProjectTwo = document.createElement('div');
+    nameProjectTwo.textContent = `name: ${newArr[indexMainOne].tasks[indexMainTwo].name}`;
+    nameProjectTwo.classList.add('nameProject');
+
+    nameProjectAndDescription.appendChild(nameProjectTwo);
+
+    const descriptionTwo = document.createElement('div');
+    descriptionTwo.textContent = `description: ${newArr[indexMainOne].tasks[indexMainTwo].decription}`;
+    descriptionTwo.classList.add('descriptionProject');
+
+    nameProjectAndDescription.appendChild(descriptionTwo);
+
+    moreContent.appendChild(nameProjectAndDescription);
+
+    const dateAndPriority = document.createElement('div');
+    dateAndPriority.classList.add('date-and-priority');
+
+    const dateProject = document.createElement('div');
+    dateAndPriority.textContent = `date: ${newArr[indexMainOne].tasks[indexMainTwo].date}`;
+    dateProject.classList.add('dateProject');
+
+    dateAndPriority.appendChild(dateProject);
+
+    const priorityProject = document.createElement('div');
+    priorityProject.textContent = `priority: ${newArr[indexMainOne].tasks[indexMainTwo].priority}`;
+    priorityProject.classList.add('priorityProject');
+
+    dateAndPriority.appendChild(priorityProject);
+
+    moreContent.appendChild(dateAndPriority);
+
+    projectsContent.appendChild(moreContent);
 }
 
 const addToPageNameProject = () => {
