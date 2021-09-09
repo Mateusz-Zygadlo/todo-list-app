@@ -10,6 +10,8 @@ const newArr = [{ name: 'inbox', tasks: [] }];
 let nowProject;
 let count;
 
+let deleteButton = document.querySelectorAll('.delete');
+
 const addItem = document.querySelector('.addItem');
 const addProject = document.querySelector('.addProject');
 
@@ -89,6 +91,8 @@ addTasksButton.addEventListener('click', () => {
     console.log(newArr);
     console.log(nowProject);
 
+    deleteButton = document.querySelectorAll('.delete');
+
     nameTasks.value = '';
     descriptiontasks.value = '';
 
@@ -142,7 +146,27 @@ addNewProject.addEventListener('click', () => {
     addProject.classList.add('visiblity');
     addToPageNameProject();
     createDiv();
-    addDiv();
+})
+
+document.addEventListener('click', (e) => {
+    if(e.target.classList.contains('viewMoreBtn')){
+        const id = e.target.dataset.id;
+
+        let indexMain = e.target.dataset.id;
+
+        for(let i = 0; i < newArr.length; i++){
+            if(newArr[i].name == nowProject){
+                indexMainOne = i;
+            }
+        }
+        for(let j = 0; j < newArr[indexMainOne].tasks.length; j++){
+            if(newArr[indexMainOne].tasks[j].id == indexMain){
+                indexMainTwo = j;
+            }
+        }
+
+        addDiv();
+    }
 })
 
 const createDiv = () => {
@@ -194,8 +218,16 @@ const createDiv = () => {
         const deleteDiv = document.createElement('div');
         deleteDiv.classList.add('delete');
 
+        const viewMoreBtn = document.createElement('button');
+        viewMoreBtn.classList.add('viewMoreBtn');
+        viewMoreBtn.textContent = 'view more';
+        viewMoreBtn.dataset.id = newArr[index].tasks[j].id;
+
+        deleteDiv.appendChild(viewMoreBtn);
+
         const materialIconsDelete = document.createElement('span');
         materialIconsDelete.classList.add('material-icons');
+        materialIconsDelete.classList.add('delete');
         materialIconsDelete.textContent = 'delete';
 
         deleteDiv.appendChild(materialIconsDelete);
@@ -212,27 +244,20 @@ let indexMainOne;
 let indexMainTwo;
 
 document.addEventListener('click', (e) => {
-    if(e.target.classList.contains('tasks')){
-        let indexMain = e.target.dataset.id;
-
-        for(let i = 0; i < newArr.length; i++){
-            if(newArr[i].name == nowProject){
-                indexMainOne = i;
-            }
-        }
-        for(let j = 0; j < newArr[indexMainOne].tasks.length; j++){
-            if(newArr[indexMainOne].tasks[j].id == indexMain){
-                indexMainTwo = j;
-            }
-        }
-
-        addDiv();
+    if(e.target.classList.contains('closeBtnMore')){
+        [...document.getElementsByClassName('moreContent')].map(item => item && item.remove());
     }
 })
 
 const addDiv = () => {
     const moreContent = document.createElement('div');
     moreContent.classList.add('moreContent');
+
+    const closeButton = document.createElement('div');
+    closeButton.classList.add('closeBtnMore');
+    closeButton.textContent = 'close';
+
+    moreContent.appendChild(closeButton);
 
     const nameProjectAndDescription = document.createElement('div');
     nameProjectAndDescription.classList.add('nameProject-and-description');
@@ -268,7 +293,7 @@ const addDiv = () => {
 
     moreContent.appendChild(dateAndPriority);
 
-    projectsContent.appendChild(moreContent);
+    document.body.appendChild(moreContent);
 }
 
 const addToPageNameProject = () => {

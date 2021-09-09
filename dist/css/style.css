@@ -243,6 +243,25 @@ p{
 .z-index-toggle{
     z-index: 100;
 }
+.viewMoreBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.delete{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.moreContent{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 500px;
+    height: 300px;
+    transform: translate(-50%,-50%);
+}
 
 @media only screen and (max-width: 1000px){
     .projects-folder{
