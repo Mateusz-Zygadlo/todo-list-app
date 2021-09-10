@@ -3,12 +3,14 @@ const more = document.querySelector('.more');
 const projectsDiv = document.querySelector('.projects');
 const projectFolder = document.querySelector('.projects-folder');
 const menu = document.querySelector('.menu');
+const main = document.querySelector('.main');
 
 const inboxMain = document.querySelector('.inbox');
 
 const newArr = [{ name: 'inbox', tasks: [] }];
 let nowProject;
 let count;
+let complitedTasks = [];
 
 let deleteButton = document.querySelectorAll('.delete');
 
@@ -60,6 +62,10 @@ addNav.addEventListener('click', () => {
 })
 
 addTasksButton.addEventListener('click', () => {
+    if(nowProject == 'complited'){
+        nowProject = 'inbox';
+    }
+
     if(nowProject){
         for(let i = 0; i < newArr.length; i++){
             if(newArr[i].name == nowProject){
@@ -81,6 +87,7 @@ addTasksButton.addEventListener('click', () => {
             date: dateTasks.value,
             priority: priorityTasksInput.value,
             id: Math.floor(Math.random() * 1000),
+            checked: false,
         })
 
         count = 0;
@@ -102,6 +109,7 @@ addTasksButton.addEventListener('click', () => {
 inboxClick.addEventListener('click', () => {
     nowProject = 'inbox';
     createDiv();
+    console.log(newArr);
 })
 
 document.addEventListener('click', (e) => {
@@ -111,19 +119,19 @@ document.addEventListener('click', (e) => {
                 nowProject = newArr[i].name;
             }
         }
-    }else if(e.target.classList.contains('tasks')){
-        const moreContentDiv = document.querySelector('.moreContent');
-        const tasks = document.querySelector('.tasks');
-
-        tasks.addEventListener('click', () => {
-            moreContentDiv.classList.toggle('visiblity');
-        })
-        
     }else{
         return;
     }
 
     createDiv();
+})
+
+document.addEventListener('click', (e) => {
+    if(e.target.classList.contains('menu')){
+        projectFolder.classList.toggle('projects-folderClick');
+        projectsContent.classList.toggle('projects-contentClick');
+        main.classList.toggle('mainClick');
+    }
 })
 
 addItem.addEventListener('click', () => {
@@ -167,6 +175,176 @@ document.addEventListener('click', (e) => {
     }
 })
 
+document.addEventListener('click', (e) => {
+    if(e.target.classList.contains('delete')){
+        for(let i = 0; i < newArr.length; i++){
+            if(newArr[i].name == nowProject){
+                index = i;
+            }
+        }
+
+        for(let j = 0; j < newArr[index].tasks.length; j++){
+            if(newArr[index].tasks[j].id == e.target.dataset.id){
+                indexTwo = j;
+            }
+        }
+
+        newArr[index].tasks.splice(indexTwo, 1);
+        createDiv();
+        console.log(newArr);
+    }
+})
+
+document.addEventListener('click', (e) => {
+    let index;
+    let indexTwo;
+
+    if(e.target.classList.contains('checkbox')){
+        if(e.target.checked){
+            for(let i = 0; i < newArr.length; i++){
+                if(newArr[i].name == nowProject){
+                    index = i;
+                }
+            }
+
+            for(let j = 0; j < newArr[index].tasks.length; j++){
+                if(newArr[index].tasks[j].id == e.target.dataset.id){
+                    indexTwo = j;
+                }
+            }
+            complitedTasks.push(newArr[index].tasks[indexTwo]);
+            
+            newArr[index].tasks.splice(indexTwo, 1);
+
+            console.log(newArr);
+
+            createDiv();
+
+        }
+    }else{
+        return false;
+    }
+})
+
+document.addEventListener('click', (e) => {
+    if(e.target.classList.contains('done')){
+        console.log([...complitedTasks]);
+        nowProject = 'complited';
+        complitedDiv();
+    }
+})
+
+document.addEventListener('click', (e) => {
+    if(e.target.classList.contains('viewMoreBtnComplited')){
+        complitedViewMore(e.target.dataset.id);
+    }
+})
+
+const complitedViewMore = (test) => {
+    let index;
+
+    for(let i = 0; i < complitedTasks.length; i++){
+        if(test == complitedTasks[i].id){
+            index = i;
+        }
+    }
+    
+    const moreContent = document.createElement('div');
+    moreContent.classList.add('moreContent');
+
+    const closeButton = document.createElement('div');
+    closeButton.classList.add('closeBtnMore');
+    closeButton.textContent = 'close';
+
+    moreContent.appendChild(closeButton);
+
+    const nameProjectAndDescription = document.createElement('div');
+    nameProjectAndDescription.classList.add('nameProject-and-description');
+
+    const nameProjectTwo = document.createElement('div');
+    nameProjectTwo.textContent = `name: ${complitedTasks[index].name}`;
+    nameProjectTwo.classList.add('nameProject');
+
+    nameProjectAndDescription.appendChild(nameProjectTwo);
+
+    const descriptionTwo = document.createElement('div');
+    descriptionTwo.textContent = `description: ${complitedTasks[index].decription}`;
+    descriptionTwo.classList.add('descriptionProject');
+
+    nameProjectAndDescription.appendChild(descriptionTwo);
+
+    moreContent.appendChild(nameProjectAndDescription);
+
+    const dateAndPriority = document.createElement('div');
+    dateAndPriority.classList.add('date-and-priority');
+
+    const dateProject = document.createElement('div');
+    dateAndPriority.textContent = `date: ${complitedTasks[index].date}`;
+    dateProject.classList.add('dateProject');
+
+    dateAndPriority.appendChild(dateProject);
+
+    const priorityProject = document.createElement('div');
+    priorityProject.textContent = `priority: ${complitedTasks[index].priority}`;
+    priorityProject.classList.add('priorityProject');
+
+    dateAndPriority.appendChild(priorityProject);
+
+    moreContent.appendChild(dateAndPriority);
+
+    document.body.appendChild(moreContent);
+}
+
+const complitedDiv = () => {
+
+    projectsContent.textContent = nowProject;
+    
+    for(let j = 0; j < complitedTasks.length; j++){
+
+        const manyProjects = document.createElement('div');
+        manyProjects.classList.add('manyProjects');
+
+        const divTasks = document.createElement('div');
+        divTasks.dataset.id = complitedTasks[j].id;
+        divTasks.classList.add('tasks');
+
+        const nameAndPriority = document.createElement('div');
+        nameAndPriority.classList.add('name-and-priority');
+
+        const checkbox = document.createElement('div');
+
+        nameAndPriority.appendChild(checkbox);
+
+        const name = document.createElement('div');
+        name.textContent = complitedTasks[j].name;
+        name.classList.add('name');
+
+        nameAndPriority.appendChild(name);
+
+        divTasks.appendChild(nameAndPriority);
+
+        const deleteDiv = document.createElement('div');
+        deleteDiv.classList.add('delete');
+
+        const viewMoreBtn = document.createElement('button');
+        viewMoreBtn.classList.add('viewMoreBtnComplited');
+        viewMoreBtn.textContent = 'view more';
+        viewMoreBtn.dataset.id = complitedTasks[j].id;
+
+        deleteDiv.appendChild(viewMoreBtn);
+
+        const priority = document.createElement('div');
+        priority.classList.add('priority');
+    
+        divTasks.appendChild(deleteDiv);
+
+        manyProjects.appendChild(divTasks);
+
+        projectsContent.appendChild(manyProjects);
+
+    }
+}
+
 const createDiv = () => {
 
     let index;
@@ -191,9 +369,10 @@ const createDiv = () => {
         nameAndPriority.classList.add('name-and-priority');
 
         const checkbox = document.createElement('div');
-        checkbox.classList.add('checkbox');
 
         const checkboxInput = document.createElement('input');
+        checkboxInput.dataset.id = newArr[index].tasks[j].id;
+        checkboxInput.classList.add('checkbox');
         checkboxInput.type = 'checkbox';
 
         checkbox.appendChild(checkboxInput);
@@ -222,14 +401,10 @@ const createDiv = () => {
         materialIconsDelete.classList.add('material-icons');
         materialIconsDelete.classList.add('delete');
         materialIconsDelete.textContent = 'delete';
+        materialIconsDelete.dataset.id = newArr[index].tasks[j].id;
 
         const priority = document.createElement('div');
         priority.classList.add('priority');
-
-        const strikethrough = document.createElement('div');
-        strikethrough.classList.add('strikethrough');
-
-        divTasks.appendChild(strikethrough);
 
         deleteDiv.appendChild(materialIconsDelete);
     
