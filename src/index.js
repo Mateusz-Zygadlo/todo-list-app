@@ -150,8 +150,6 @@ addNewProject.addEventListener('click', () => {
 
 document.addEventListener('click', (e) => {
     if(e.target.classList.contains('viewMoreBtn')){
-        const id = e.target.dataset.id;
-
         let indexMain = e.target.dataset.id;
 
         for(let i = 0; i < newArr.length; i++){
@@ -172,7 +170,7 @@ document.addEventListener('click', (e) => {
 const createDiv = () => {
 
     let index;
-    projectsContent.textContent = '';
+    projectsContent.textContent = nowProject;
 
     for(let i = 0; i < newArr.length; i++){
         if(newArr[i].name == nowProject){
@@ -191,11 +189,6 @@ const createDiv = () => {
 
         const nameAndPriority = document.createElement('div');
         nameAndPriority.classList.add('name-and-priority');
-
-        const priority = document.createElement('div');
-        priority.classList.add('priority');
-
-        nameAndPriority.appendChild(priority);
 
         const checkbox = document.createElement('div');
         checkbox.classList.add('checkbox');
@@ -229,6 +222,14 @@ const createDiv = () => {
         materialIconsDelete.classList.add('material-icons');
         materialIconsDelete.classList.add('delete');
         materialIconsDelete.textContent = 'delete';
+
+        const priority = document.createElement('div');
+        priority.classList.add('priority');
+
+        const strikethrough = document.createElement('div');
+        strikethrough.classList.add('strikethrough');
+
+        divTasks.appendChild(strikethrough);
 
         deleteDiv.appendChild(materialIconsDelete);
     
