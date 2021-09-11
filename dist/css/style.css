@@ -4,14 +4,14 @@
     box-sizing: border-box;
 }
 body{
-    background-color: antiquewhite;
+    background-color: lightskyblue;
     width: 100%;
     height: 100%;
 }
 .nav{
     width: 100%;
     height: 50px;
-    background-color: aqua;
+    background-color: rgb(46, 46, 175);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -73,7 +73,7 @@ p{
     align-items: center;
 }
 .projects{
-    padding-left: 40px;
+    padding-left: 30px;
     margin-bottom: 20px;
     display: flex;
     justify-content: flex-start;
@@ -83,8 +83,16 @@ p{
 .projects p{
     font-size: 20px;
 }
+.addtasks input{
+    height: 20px;
+}
+.projectsNameInPage{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
 .projects-content{
-    background-color: violet;
+    background-color: lightblue;
     width: 100%;
     height: 100%;
     padding: 20px;
@@ -146,9 +154,6 @@ p{
     flex-direction: column;
     padding: 20px;
     width: 50%;
-}
-.priorityTasksInput{
-    height: 20px;
 }
 .addProject form{
     margin-top: 40px;
@@ -214,6 +219,15 @@ p{
 .addItem span{
     font-size: 18px;
 }
+.lightblue{
+    border-bottom: 4px solid lightblue;
+}
+.orange{
+    border-bottom: 4px solid orange;
+}
+.red{
+    border-bottom: 4px solid red;
+}
 .tasks{
     display: flex;
     justify-content: space-between;
@@ -242,23 +256,34 @@ p{
     margin-right: 10px;
 }
 .moreContent{
-    background-color: lightblue;
+    border: 1px solid black;
     padding: 20px;
     display: flex;
-    flex-direction: column;
     font-size: 20px;
 }
 .moreContent .nameProject-and-description{
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 50%;
+    height: 100%;
+    margin-left: 20px;
+    max-width: 250px;
+    max-height: 400px;
+    overflow: hidden;
 }
-.moreContent .nameProject-and-description .description{
-    width: 70%;
+.descriptionProject{
+    width: 80%;
 }
-.moreContent .date-and-priority{
-    display: flex;
-    justify-content: space-around;
+.closeBtnMore{
+    position: relative;
+    top: 0;
+    left: 0;
+}.date-and-priority{
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 50%;
+    height: 100%;
+    margin-left: 10px;
 }
 .manyProjects{
     margin: 10px auto;
@@ -269,6 +294,19 @@ p{
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 4px 10px;
+    margin-right: 10px;
+    border: 1px solid black;
+    background-color: white;
+}
+.viewMoreBtnComplited{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4px 10px;
+    margin-right: 10px;
+    border: 1px solid black;
+    background-color: white;
 }
 .delete{
     display: flex;
@@ -281,8 +319,9 @@ p{
     top: 50%;
     left: 50%;
     width: 500px;
-    height: 300px;
+    height: 250px;
     transform: translate(-50%,-50%);
+    z-index: 11;
 }
 .priority{
     width: 100%;
@@ -332,7 +371,7 @@ p{
 }
 .projects-contentClick{
     position: absolute;
-    background-color: violet;
+    background-color: lightblue;
     width: 100%;
     top: 0;
     left: 0;
@@ -342,9 +381,12 @@ p{
     overflow-y: auto;
     overflow-x: hidden;
 }
+.root{
+    padding-left: 10px;
+}
 .projects-folderClick{
     position: absolute;
-    background-color: bisque;
+    background-color: lightskyblue;
     width: 300px;
     height: calc(100vh - 40px);
     padding: 20px;
@@ -353,6 +395,16 @@ p{
     left: 0;
     margin-top: 40px;
     z-index: -9;
+}
+.bgThree{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(35, 250, 232, 0.25);
+    backdrop-filter: blur(20px);
+    z-index: 10;
 }
 
 @media only screen and (max-width: 1000px){
@@ -364,7 +416,6 @@ p{
     }
     .projects-content{
         position: absolute;
-        background-color: violet;
         width: 100%;
         top: 0;
         left: 0;
@@ -376,9 +427,9 @@ p{
     }
     .projects-folder{
         position: absolute;
-        background-color: bisque;
         width: 300px;
         height: calc(100vh - 40px);
+        background-color: lightskyblue;
         padding: 20px;
         z-index: 100;
         top: 0;
@@ -400,5 +451,8 @@ p{
     }
     .addProject button{
         left: 80%;
+    }
+    .moreContent{
+        width: 400px;
     }
 }

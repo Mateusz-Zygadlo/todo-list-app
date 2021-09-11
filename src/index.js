@@ -78,6 +78,9 @@ const standardInputs = () => {
 
     noValidFour.classList.add('visiblity');
     dateTasks.style.border = '1px solid black';
+
+    noValidFive.classList.add('visiblity');
+    priorityTasksInput.style.border = '1px solid black';
 }
 
 const isValid = () => {
@@ -107,6 +110,14 @@ const isValid = () => {
         noValidFour.classList.add('visiblity');
         dateTasks.style.border = '1px solid black';
     }
+    if(!priorityTasksInput.value){
+        noValidFive.classList.remove('visiblity');
+        priorityTasksInput.style.border = '1px solid red';
+        count++;
+    }else{
+        noValidFive.classList.add('visiblity');
+        priorityTasksInput.style.border = '1px solid black';
+    }
 
     return{
         count,
@@ -119,20 +130,7 @@ addTasksButton.addEventListener('click', () => {
         return;
     }
 
-    if(nowProject){
-        for(let i = 0; i < newArr.length; i++){
-            if(newArr[i].name == nowProject){
-                newArr[i].tasks.push({
-                    name: nameTasks.value,
-                    decription: descriptiontasks.value,
-                    date: dateTasks.value,
-                    priority: priorityTasksInput.value,
-                    id: Math.floor(Math.random() * 1000),
-                })
-                count = i;
-            }
-        }
-    }else{
+    if(nowProject == 'complited'){
         nowProject = 'inbox';
         newArr[0].tasks.push({
             name: nameTasks.value,
@@ -144,6 +142,33 @@ addTasksButton.addEventListener('click', () => {
         })
 
         count = 0;
+    }else{
+        if(nowProject){
+            for(let i = 0; i < newArr.length; i++){
+                if(newArr[i].name == nowProject){
+                    newArr[i].tasks.push({
+                        name: nameTasks.value,
+                        decription: descriptiontasks.value,
+                        date: dateTasks.value,
+                        priority: priorityTasksInput.value,
+                        id: Math.floor(Math.random() * 1000),
+                    })
+                    count = i;
+                }
+            }
+        }else{
+            nowProject = 'inbox';
+            newArr[0].tasks.push({
+                name: nameTasks.value,
+                decription: descriptiontasks.value,
+                date: dateTasks.value,
+                priority: priorityTasksInput.value,
+                id: Math.floor(Math.random() * 1000),
+                checked: false,
+            })
+    
+            count = 0;
+        } 
     }
 
     createDiv();
@@ -322,6 +347,7 @@ const complitedViewMore = (test) => {
     moreContent.classList.add('moreContent');
 
     const closeButton = document.createElement('div');
+    closeButton.classList.add('material-icons');
     closeButton.classList.add('closeBtnMore');
     closeButton.textContent = 'close';
 
@@ -348,7 +374,7 @@ const complitedViewMore = (test) => {
     dateAndPriority.classList.add('date-and-priority');
 
     const dateProject = document.createElement('div');
-    dateAndPriority.textContent = `date: ${complitedTasks[index].date}`;
+    dateProject.textContent = `date: ${complitedTasks[index].date}`;
     dateProject.classList.add('dateProject');
 
     dateAndPriority.appendChild(dateProject);
@@ -361,14 +387,31 @@ const complitedViewMore = (test) => {
 
     moreContent.appendChild(dateAndPriority);
 
-    document.body.appendChild(moreContent);
+    const bgThree = document.createElement('div');
+    bgThree.classList.add('bgThree');
+
+    bgThree.appendChild(moreContent)
+
+    document.body.appendChild(bgThree);
 }
 
 const complitedDiv = () => {
 
-    projectsContent.textContent = nowProject;
+    projectsContent.textContent = '';
+    let borderColorClass;
+
+    nowPageInTasks(nowProject);
     
     for(let j = 0; j < complitedTasks.length; j++){
+
+        
+        if(complitedTasks[j].priority == 'low'){
+            borderColorClass = 'lightblue';
+        }else if(complitedTasks[j].priority == 'medium'){
+            borderColorClass = 'orange';
+        }else if(complitedTasks[j].priority == 'high'){
+            borderColorClass = 'red';
+        }
 
         const manyProjects = document.createElement('div');
         manyProjects.classList.add('manyProjects');
@@ -376,6 +419,7 @@ const complitedDiv = () => {
         const divTasks = document.createElement('div');
         divTasks.dataset.id = complitedTasks[j].id;
         divTasks.classList.add('tasks');
+        divTasks.classList.add(borderColorClass);
 
         const nameAndPriority = document.createElement('div');
         nameAndPriority.classList.add('name-and-priority');
@@ -425,6 +469,7 @@ const nowPageInTasks = (item) => {
 const createDiv = () => {
 
     let index;
+    let borderColorClass;
     projectsContent.textContent = '';
 
     nowPageInTasks(nowProject);
@@ -437,12 +482,21 @@ const createDiv = () => {
 
     for(let j = 0; j < newArr[index].tasks.length; j++){
 
+        if(newArr[index].tasks[j].priority == 'low'){
+            borderColorClass = 'lightblue';
+        }else if(newArr[index].tasks[j].priority == 'medium'){
+            borderColorClass = 'orange';
+        }else if(newArr[index].tasks[j].priority == 'high'){
+            borderColorClass = 'red';
+        }
+
         const manyProjects = document.createElement('div');
         manyProjects.classList.add('manyProjects');
 
         const divTasks = document.createElement('div');
         divTasks.dataset.id = newArr[index].tasks[j].id;
         divTasks.classList.add('tasks');
+        divTasks.classList.add(borderColorClass);
 
         const nameAndPriority = document.createElement('div');
         nameAndPriority.classList.add('name-and-priority');
@@ -501,6 +555,7 @@ let indexMainTwo;
 document.addEventListener('click', (e) => {
     if(e.target.classList.contains('closeBtnMore')){
         [...document.getElementsByClassName('moreContent')].map(item => item && item.remove());
+        [...document.getElementsByClassName('bgThree')].map(item => item && item.remove());
     }
 })
 
@@ -510,6 +565,7 @@ const addDiv = () => {
 
     const closeButton = document.createElement('div');
     closeButton.classList.add('closeBtnMore');
+    closeButton.classList.add('material-icons')
     closeButton.textContent = 'close';
 
     moreContent.appendChild(closeButton);
@@ -535,7 +591,7 @@ const addDiv = () => {
     dateAndPriority.classList.add('date-and-priority');
 
     const dateProject = document.createElement('div');
-    dateAndPriority.textContent = `date: ${newArr[indexMainOne].tasks[indexMainTwo].date}`;
+    dateProject.textContent = `date: ${newArr[indexMainOne].tasks[indexMainTwo].date}`;
     dateProject.classList.add('dateProject');
 
     dateAndPriority.appendChild(dateProject);
@@ -548,7 +604,12 @@ const addDiv = () => {
 
     moreContent.appendChild(dateAndPriority);
 
-    document.body.appendChild(moreContent);
+    const bgThree = document.createElement('div');
+    bgThree.classList.add('bgThree');
+
+    bgThree.appendChild(moreContent);
+
+    document.body.appendChild(bgThree);
 }
 
 const addToPageNameProject = () => {
