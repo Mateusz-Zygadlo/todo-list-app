@@ -108,8 +108,8 @@ p{
     transform: translate(-50%,-50%);
     width: 550px;
     height: 250px;
-    background-color: aquamarine;
     padding: 20px;
+    border: 1px solid black;
 }
 .addtasks{
     position: fixed;
@@ -118,19 +118,37 @@ p{
     transform: translate(-50%,-50%);
     min-width: 550px;
     height: 250px;
-    background-color: aquamarine;
+    border: 1px solid black;
     padding: 20px;
     display: flex;
     flex-direction: column;
+    z-index: 11;
+}
+.sublitTask{
+    position: relative;
+    bottom: -30%;
+}
+.addtasks form{
+    display: flex;
+    flex-direction: column;
+    flex-direction: row;
 }
 .addtasks .one{
     display: flex;
     justify-content: space-between;
-    margin-bottom: 20px;
+    flex-direction: column;
+    padding: 20px;
+    width: 50%;
 }
 .addtasks .two{
     display: flex;
     justify-content: space-between;
+    flex-direction: column;
+    padding: 20px;
+    width: 50%;
+}
+.priorityTasksInput{
+    height: 20px;
 }
 .addProject form{
     margin-top: 40px;
@@ -157,12 +175,18 @@ p{
 }
 .addProject button{
     padding: 10px 25px;
-    background-color: blueviolet;
+    background-color: lightblue;
     border: none;
     border-radius: 3px;
     position: relative;
     top: 10%;
-    left: 85%;
+    left: 86%;
+}
+.emptyInputProject{
+    font-size: 15px;
+    display: flex;
+    justify-content: flex-start;
+    color: red;
 }
 .button-space{
     width: 100%;
@@ -171,11 +195,11 @@ p{
 .addTasksButton{
     margin-top: 20px;
     padding: 10px 25px;
-    background-color: blueviolet;
+    background-color: lightblue;
     border: none;
     border-radius: 3px;
     position: relative;
-    top: 10%;
+    bottom: 60%;
     left: 85%;
 }
 .addItem{
@@ -213,7 +237,6 @@ p{
 .closeTasks{
     display: flex;
     justify-content: space-between;
-    margin-bottom: 20px;
 }
 .checkbox{
     margin-right: 10px;
@@ -239,10 +262,8 @@ p{
 }
 .manyProjects{
     margin: 10px auto;
+    max-width: 800px;
     width: 90%;
-}
-.z-index-toggle{
-    z-index: 100;
 }
 .viewMoreBtn{
     display: flex;
@@ -276,50 +297,108 @@ p{
     top: 25px;
     z-index: 10;
 }
-
-.projects-folderClick{
-    background-color: beige;
-    width: 300px;
-    height: calc(100vh - 70px);
-    z-index: -10;
+.nowPageName{
+    font-size: 30px;  
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-.projects-contentClick{
-    background-color: white;
-    width: 100%;
-    height: 100vh;
+.bg{
     position: absolute;
     top: 0;
     left: 0;
-    padding-top: 50px;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(35, 250, 232, 0.25);
+    backdrop-filter: blur(20px);
+    z-index: 10;
 }
+.bgTwo{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(35, 250, 232, 0.25);
+    backdrop-filter: blur(20px);
+    z-index: 10;
+}
+
 .mainClick{
     display: grid;
     grid-template-columns: 1fr;
     width: 100%;
-    padding-top: 50px;
     height: 100vh;
+}
+.projects-contentClick{
+    position: absolute;
+    background-color: violet;
+    width: 100%;
+    top: 0;
+    left: 0;
+    height: calc(100vh - 40px);
+    padding: 20px;
+    margin-top: 40px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.projects-folderClick{
+    position: absolute;
+    background-color: bisque;
+    width: 300px;
+    height: calc(100vh - 40px);
+    padding: 20px;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    margin-top: 40px;
+    z-index: -9;
 }
 
 @media only screen and (max-width: 1000px){
-    .projects-folder{
-        background-color: beige;
-        width: 300px;
-        height: calc(100vh - 70px);
-    }
-    .projects-content{
-        background-color: white;
-        width: 100%;
-        height: 100vh;
-        position: absolute;
-        top: 0;
-        left: 0;
-        padding-top: 50px;
-    }
     .main{
         display: grid;
         grid-template-columns: 1fr;
         width: 100%;
-        padding-top: 50px;
         height: 100vh;
     }
-}   
+    .projects-content{
+        position: absolute;
+        background-color: violet;
+        width: 100%;
+        top: 0;
+        left: 0;
+        height: calc(100vh - 40px);
+        padding: 20px;
+        margin-top: 40px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    .projects-folder{
+        position: absolute;
+        background-color: bisque;
+        width: 300px;
+        height: calc(100vh - 40px);
+        padding: 20px;
+        z-index: 100;
+        top: 0;
+        left: 0;
+        margin-top: 40px;
+        z-index: 9;
+    }
+}
+   
+@media only screen and (max-width: 600px){
+    .addtasks{
+        min-width: 400px;
+    }
+    .addTasksButton{
+        left: 80%;
+    }
+    .addProject{
+        width: 400px;
+    }
+    .addProject button{
+        left: 80%;
+    }
+}

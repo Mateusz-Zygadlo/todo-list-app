@@ -19,8 +19,8 @@
             <span class="done material-icons">done</span>
         </div>
     </nav>
-    <div class="main">
-        <div class="overflow projects-folder">
+    <div class="main mainMain">
+        <div class="projects-folder folder">
             <div class="inbox">
                 <p class="inboxClick"><span class="material-icons">inbox</span>inbox</p>
             </div>
@@ -36,48 +36,57 @@
                 </div>
             </div>
         </div>
-        <div class="projects-content"></div>
+        <div class="projects-content content"></div>
     </div>
-    <div class="visiblity addProject">
-        <div>
-            <h1>New project</h1>
-            <span class="close material-icons">close</span>
-        </div>
-        <form>
-            <label>Project name:</label>
-            <input class="addProjectInput" type="text">
-        </form>
-        <div class="button-space">
-            <button class="add">add</button>
+    <div class="bgTwo visiblity">
+        <div class="visiblity addProject">
+            <div>
+                <h1>New project</h1>
+                <span class="close material-icons">close</span>
+            </div>
+            <form>
+                <label>Project name:</label>
+                <input class="addProjectInput" type="text" required>
+                <p class="visiblity emptyInputProject noValidOne">no Valid Input</p>
+            </form>
+            <div class="button-space">
+                <button class="add">add</button>
+            </div>
         </div>
     </div>
-    <div class="visiblity addtasks">
-        <div class="closeTasks">
-            <h1>New tasks</h1>
-            <span class="closeTasksClick material-icons">close</span>
-        </div>
-        <form>
-            <div class="one">
-                <label>name:</label>
-                <input class="nameTasks" type="text">
-
-                <label>description:</label>
-                <input class="descriptiontasks" type="area">
+    <div class="visiblity bg">
+        <div class="visiblity addtasks">
+            <div class="closeTasks">
+                <h1>New tasks</h1>
+                <span class="closeTasksClick material-icons">close</span>
             </div>
-            <div class="two">
-                <label>date:</label>
-                <input class="dateTasks" type="date">
-
-                <label for="priority">priority</label>
-                <select class="priorityTasksInput" id="priority" name="priority">
-                    <option value="low">low</option>
-                    <option value="medium">medium</option>
-                    <option value="high">high</option>
-                </select>
+            <form>
+                <div class="one">
+                    <label>name:</label>
+                    <input class="nameTasks" type="text" required>
+                    <p class="visiblity noValidTwo emptyInputProject">no Valid Input</p>
+    
+                    <label>description:</label>
+                    <input class="descriptiontasks" type="text" required>
+                    <p class="visiblity noValidThree emptyInputProject">no Valid Input</p>
+                </div>
+                <div class="two">
+                    <label>date:</label>
+                    <input class="dateTasks" type="date" required>
+                    <p class="visiblity noValidFour emptyInputProject">no Valid Input</p>
+    
+                    <label for="priority">priority</label>
+                    <select class="priorityTasksInput" id="priority" name="priority" required>
+                        <option value="low">low</option>
+                        <option value="medium">medium</option>
+                        <option value="high">high</option>
+                    </select>
+                    <p class="visiblity noValidFive emptyInputProject">no Valid Input</p>
+                </div>
+            </form>
+            <div class="button-space">
+                <button class="addTasksButton">add</button>
             </div>
-        </form>
-        <div class="button-space">
-            <button class="addTasksButton">add</button>
         </div>
     </div>
 
