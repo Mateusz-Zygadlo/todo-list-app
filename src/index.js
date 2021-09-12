@@ -8,12 +8,19 @@ const main = document.querySelector('.mainMain');
 const bg = document.querySelector('.bg');
 const bgTwo = document.querySelector('.bgTwo');
 
+const complitedTasks = [];
+
 const inboxMain = document.querySelector('.inbox');
 
-const newArr = [{ name: 'inbox', tasks: [] }];
+const newArr = [
+    complitedTasks, 
+{ 
+    name: 'inbox',
+    tasks: [],
+}];
+
 let nowProject;
 let count;
-let complitedTasks = [];
 
 let deleteButton = document.querySelectorAll('.delete');
 
@@ -132,13 +139,12 @@ addTasksButton.addEventListener('click', () => {
 
     if(nowProject == 'complited'){
         nowProject = 'inbox';
-        newArr[0].tasks.push({
+        newArr[1].tasks.push({
             name: nameTasks.value,
             decription: descriptiontasks.value,
             date: dateTasks.value,
             priority: priorityTasksInput.value,
             id: Math.floor(Math.random() * 1000),
-            checked: false,
         })
 
         count = 0;
@@ -158,13 +164,12 @@ addTasksButton.addEventListener('click', () => {
             }
         }else{
             nowProject = 'inbox';
-            newArr[0].tasks.push({
+            newArr[1].tasks.push({
                 name: nameTasks.value,
                 decription: descriptiontasks.value,
                 date: dateTasks.value,
                 priority: priorityTasksInput.value,
                 id: Math.floor(Math.random() * 1000),
-                checked: false,
             })
     
             count = 0;
@@ -302,14 +307,15 @@ document.addEventListener('click', (e) => {
             }
 
             for(let j = 0; j < newArr[index].tasks.length; j++){
+                console.log(j);
                 if(newArr[index].tasks[j].id == e.target.dataset.id){
                     indexTwo = j;
                 }
             }
             complitedTasks.push(newArr[index].tasks[indexTwo]);
-            
-            newArr[index].tasks.splice(indexTwo, 1);
 
+            newArr[index].tasks.splice(indexTwo, 1);
+            
             console.log(newArr);
 
             createDiv();
@@ -446,6 +452,14 @@ const complitedDiv = () => {
 
         deleteDiv.appendChild(viewMoreBtn);
 
+        const deleteBtn = document.createElement('span');
+        deleteBtn.classList.add('material-icons');
+        deleteBtn.textContent = 'delete';
+        deleteBtn.classList.add('complitedTasksDeleteButton');
+        deleteBtn.dataset.id = complitedTasks[j].id;
+
+        deleteDiv.appendChild(deleteBtn);
+
         const priority = document.createElement('div');
         priority.classList.add('priority');
     
@@ -457,6 +471,18 @@ const complitedDiv = () => {
 
     }
 }
+
+document.addEventListener('click', (e) => {
+    if(e.target.classList.contains('complitedTasksDeleteButton')){
+        for(let i = 0; i < complitedTasks.length; i++){
+            if(complitedTasks[i].id == e.target.dataset.id){
+                complitedTasks.splice(complitedTasks[i]);
+            }
+        }
+        console.log(newArr);
+        complitedDiv();
+    }
+})
 
 const nowPageInTasks = (item) => {
     const nowPageName = document.createElement('div');
