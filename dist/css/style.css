@@ -119,6 +119,19 @@ p{
     padding: 20px;
     border: 1px solid black;
 }
+.updateTasks{
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    min-width: 550px;
+    height: 250px;
+    border: 1px solid black;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    z-index: 11;
+}
 .addtasks{
     position: fixed;
     left: 50%;
@@ -136,12 +149,31 @@ p{
     position: relative;
     bottom: -30%;
 }
+.updateTasks form{
+    display: flex;
+    flex-direction: column;
+    flex-direction: row;
+}
 .addtasks form{
     display: flex;
     flex-direction: column;
     flex-direction: row;
 }
+.updateTasks .one{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    padding: 20px;
+    width: 50%;
+}
 .addtasks .one{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    padding: 20px;
+    width: 50%;
+}
+.updateTasks .two{
     display: flex;
     justify-content: space-between;
     flex-direction: column;
@@ -198,6 +230,16 @@ p{
     height: 60px;
 }
 .addTasksButton{
+    margin-top: 20px;
+    padding: 10px 25px;
+    background-color: lightblue;
+    border: none;
+    border-radius: 3px;
+    position: relative;
+    bottom: 60%;
+    left: 85%;
+}
+.UpdateTasksButton{
     margin-top: 20px;
     padding: 10px 25px;
     background-color: lightblue;
@@ -325,6 +367,18 @@ p{
     backdrop-filter: blur(20px);
     z-index: 10;
 }
+.editButton{
+    margin-right: 10px;
+    border: 1px solid black;
+    padding: 4px 10px;
+    background-color: white;
+}
+.editButtonComplited{
+    margin-right: 10px;
+    border: 1px solid black;
+    padding: 4px 10px;
+    background-color: white;
+}
 .moreContent .nameProject-and-description{
     display: grid;
     grid-template-columns: 1fr;
@@ -407,6 +461,16 @@ p{
     align-items: center;
 }
 .bg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(35, 250, 232, 0.25);
+    backdrop-filter: blur(20px);
+    z-index: 10;
+}
+.bgSix{
     position: absolute;
     top: 0;
     left: 0;
@@ -518,6 +582,12 @@ p{
         min-width: 400px;
     }
     .addTasksButton{
+        left: 80%;
+    }
+    .updateTasks{
+        min-width: 400px;
+    }
+    .UpdateTasksButton{
         left: 80%;
     }
     .addProject{

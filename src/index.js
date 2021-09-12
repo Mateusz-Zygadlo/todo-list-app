@@ -509,6 +509,125 @@ document.addEventListener('click', (e) => {
     }
 })
 
+const updatePopUp = document.querySelector('.bgSix');
+const closeTasksUpdate = document.querySelector('.closeTasksUpdate');
+
+const updateNameTasks = document.querySelector('.updateNameTasks');
+const updateDescriptiontasks = document.querySelector('.updateDescriptiontasks');
+const updateDateTasks = document.querySelector('.updateDateTasks');
+const updatePriorityTasksInput = document.querySelector('.updatePriorityTasksInput');
+
+const noValidUpdateOne = document.querySelector('.noValidUpdateOne');
+const noValidUpdateTwo = document.querySelector('.noValidUpdateTwo');
+const noValidUpdateThree = document.querySelector('.noValidUpdateThree');
+const noValidUpdateFour = document.querySelector('.noValidUpdateFour');
+
+const UpdateTasksButton = document.querySelector('.UpdateTasksButton');
+
+const validUpdate = () => {
+    let countTest = 0;
+
+    if(!updateNameTasks.value){
+        noValidUpdateOne.classList.remove('visiblity');
+        updateNameTasks.style.border = '1px solid red';
+        countTest++;
+    }else{
+        noValidUpdateOne.classList.add('visiblity');
+        updateNameTasks.style.border = '1px solid black';
+    }
+    if(!updateDescriptiontasks.value){
+        noValidUpdateTwo.classList.remove('visiblity');
+        updateDescriptiontasks.style.border = '1px solid red';
+        countTest++;
+    }else{
+        noValidUpdateTwo.classList.add('visiblity');
+        updateDescriptiontasks.style.border = '1px solid black';
+    }
+    if(!updateDateTasks.value){
+        noValidUpdateThree.classList.remove('visiblity');
+        updateDateTasks.style.border = '1px solid red';
+        countTest++;
+    }else{
+        noValidUpdateThree.classList.add('visiblity');
+        updateDateTasks.style.border = '1px solid black';
+    }
+    if(!updatePriorityTasksInput.value){
+        noValidUpdateFour.classList.remove('visiblity');
+        updatePriorityTasksInput.style.border = '1px solid red';
+        countTest++;
+    }else{
+        noValidUpdateFour.classList.add('visiblity');
+        updatePriorityTasksInput.style.border = '1px solid black';
+    }
+
+    return{
+        countTest,
+    }
+}
+
+document.addEventListener('click', (e) => {
+    if(e.target.classList.contains('editButton')){
+        let index;
+        let indexTwo;
+
+        for(let i = 0; i < newArr.length; i++){
+            if(newArr[i].name == nowProject){
+                index = i;
+            }
+        }
+
+        for(let j = 0; j < newArr[index].tasks.length; j++){
+            if(newArr[index].tasks[j].id == e.target.dataset.id){
+                indexTwo = j;
+            }
+        }
+
+        updateNameTasks.value = newArr[index].tasks[indexTwo].name;
+        updateDescriptiontasks.value = newArr[index].tasks[indexTwo].decription;
+        updateDateTasks.value = newArr[index].tasks[indexTwo].date;
+        updatePriorityTasksInput.value = newArr[index].tasks[indexTwo].priority;
+
+        updatePopUp.classList.remove('visiblity');
+
+        closeTasksUpdate.addEventListener('click', () => {
+            updateNameTasks.value = '';
+            updateDescriptiontasks.value = '';
+            updateDateTasks.value = '';
+            updatePriorityTasksInput.value = '';
+
+            updatePopUp.classList.add('visiblity');
+        })
+
+        UpdateTasksButton.addEventListener('click', () => {
+            
+            if(validUpdate().countTest){
+                return;
+            }else{
+                const newObj = {
+                    name: updateNameTasks.value,
+                    decription: updateDescriptiontasks.value,
+                    date: updateDateTasks.value,
+                    priority: updatePriorityTasksInput.value,
+                    id: newArr[index].tasks[indexTwo].id,
+                }
+
+                newArr[index].tasks.splice(indexTwo, 1, newObj);
+
+                updateNameTasks.value = '';
+                updateDescriptiontasks.value = '';
+                updateDateTasks.value = '';
+                updatePriorityTasksInput.value = '';
+
+                updatePopUp.classList.add('visiblity');
+                
+                createDiv();
+
+                console.log(newArr);
+            }
+        })
+    }
+})
+
 const nowPageInTasks = (item) => {
     const nowPageName = document.createElement('div');
     nowPageName.textContent = item;
@@ -573,6 +692,13 @@ const createDiv = () => {
 
         const deleteDiv = document.createElement('div');
         deleteDiv.classList.add('delete');
+
+        const editButton = document.createElement('button');
+        editButton.classList.add('editButton');
+        editButton.textContent = 'edit';
+        editButton.dataset.id = newArr[index].tasks[j].id;
+
+        deleteDiv.appendChild(editButton)
 
         const viewMoreBtn = document.createElement('button');
         viewMoreBtn.classList.add('viewMoreBtn');
@@ -692,3 +818,6 @@ viewMore.addEventListener('click', () => {
     projectFolder.classList.toggle('overflow');
     projectFolder.classList.toggle('overflowHidden');
 })
+
+nowProject = 'inbox';
+createDiv();
