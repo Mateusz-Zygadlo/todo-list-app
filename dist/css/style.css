@@ -252,6 +252,60 @@ p{
     display: flex;
     justify-content: space-between;
 }
+.deletePopUp{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid black;
+    padding: 20px;
+    width: 500px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    z-index: 11;
+}
+.deletePopUpTwo{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid black;
+    padding: 20px;
+    width: 500px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    z-index: 11;
+}
+.deletePopUpTwo h1{
+    font-weight: 100;
+}
+.deletePopUp h1{
+    font-weight: 100;
+}
+.deletePopUp .buttons{
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.deletePopUpTwo .buttons button{
+    padding: 5px 16px;
+    margin: 10px;
+    background-color: white;
+    border: 1px solid black;
+}
+.deletePopUp .buttons button{
+    padding: 5px 16px;
+    margin: 10px;
+    background-color: white;
+    border: 1px solid black;
+}
 .checkbox{
     margin-right: 10px;
 }
@@ -260,6 +314,16 @@ p{
     padding: 20px;
     display: flex;
     font-size: 20px;
+}
+.bgFive{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(35, 250, 232, 0.25);
+    backdrop-filter: blur(20px);
+    z-index: 10;
 }
 .moreContent .nameProject-and-description{
     display: grid;
@@ -353,6 +417,16 @@ p{
     z-index: 10;
 }
 .bgTwo{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(35, 250, 232, 0.25);
+    backdrop-filter: blur(20px);
+    z-index: 10;
+}
+.bgFour{
     position: absolute;
     top: 0;
     left: 0;

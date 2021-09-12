@@ -274,23 +274,35 @@ document.addEventListener('click', (e) => {
     }
 })
 
+const buttonCancel = document.querySelector('.cancel');
+const buttonDeleteTasks = document.querySelector('.deleteTasks');
+const popUpDelete = document.querySelector('.bgFour');
+
 document.addEventListener('click', (e) => {
     if(e.target.classList.contains('delete')){
-        for(let i = 0; i < newArr.length; i++){
-            if(newArr[i].name == nowProject){
-                index = i;
+        popUpDelete.classList.remove('visiblity');
+        
+        buttonCancel.addEventListener('click', () => {
+            popUpDelete.classList.add('visiblity');
+        })
+        buttonDeleteTasks.addEventListener('click', () => {
+            for(let i = 0; i < newArr.length; i++){
+                if(newArr[i].name == nowProject){
+                    index = i;
+                }
             }
-        }
 
-        for(let j = 0; j < newArr[index].tasks.length; j++){
-            if(newArr[index].tasks[j].id == e.target.dataset.id){
-                indexTwo = j;
+            for(let j = 0; j < newArr[index].tasks.length; j++){
+                if(newArr[index].tasks[j].id == e.target.dataset.id){
+                    indexTwo = j;
+                }
             }
-        }
 
-        newArr[index].tasks.splice(indexTwo, 1);
-        createDiv();
-        console.log(newArr);
+            newArr[index].tasks.splice(indexTwo, 1);
+            createDiv();
+            console.log(newArr);
+            popUpDelete.classList.add('visiblity');
+        })
     }
 })
 
@@ -472,15 +484,28 @@ const complitedDiv = () => {
     }
 }
 
+const bgFive = document.querySelector('.bgFive');
+const deleteTasksTwo = document.querySelector('.deleteTasksTwo');
+const cancelTwo = document.querySelector('.cancelTwo');
+
 document.addEventListener('click', (e) => {
     if(e.target.classList.contains('complitedTasksDeleteButton')){
-        for(let i = 0; i < complitedTasks.length; i++){
-            if(complitedTasks[i].id == e.target.dataset.id){
-                complitedTasks.splice(complitedTasks[i]);
+        bgFive.classList.remove('visiblity');
+        
+        cancelTwo.addEventListener('click', () => {
+            bgFive.classList.add('visiblity');
+        })
+        deleteTasksTwo.addEventListener('click', () => {
+            for(let i = 0; i < complitedTasks.length; i++){
+                if(complitedTasks[i].id == e.target.dataset.id){
+                    complitedTasks.splice(i, 1);
+                }
             }
-        }
-        console.log(newArr);
-        complitedDiv();
+
+            complitedDiv();
+            console.log(newArr);
+            bgFive.classList.add('visiblity');
+        })
     }
 })
 
