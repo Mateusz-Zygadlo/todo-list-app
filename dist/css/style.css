@@ -544,6 +544,9 @@ p{
     backdrop-filter: blur(20px);
     z-index: 10;
 }
+.all{
+    margin-left: 20px;
+}
 
 @media only screen and (max-width: 1000px){
     .main{

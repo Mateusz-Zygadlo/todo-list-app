@@ -19,10 +19,104 @@ const newArr = [
     tasks: [],
 }];
 
+window.localStorage.setItem('newArr', JSON.stringify(newArr));
+
 let nowProject;
 let count;
 
 let deleteButton = document.querySelectorAll('.delete');
+
+const allClick = document.querySelector('.allClick');
+
+allClick.addEventListener('click', () => {
+    nowProject = 'all';
+    allTasks();
+})
+
+const allTasks = () => {
+    
+    let borderColorClass;
+    projectsContent.textContent = '';
+
+    nowPageInTasks(nowProject);
+
+    for(let i = 1; i < newArr.length; i++){
+        for(let j = 0; j < newArr[i].tasks.length; j++){
+
+            if(newArr[i].tasks[j].priority == 'low'){
+                borderColorClass = 'lightblue';
+            }else if(newArr[i].tasks[j].priority == 'medium'){
+                borderColorClass = 'orange';
+            }else if(newArr[i].tasks[j].priority == 'high'){
+                borderColorClass = 'red';
+            }
+    
+            const manyProjects = document.createElement('div');
+            manyProjects.classList.add('manyProjects');
+    
+            const divTasks = document.createElement('div');
+            divTasks.dataset.id = newArr[i].tasks[j].id;
+            divTasks.classList.add('tasks');
+            divTasks.classList.add(borderColorClass);
+    
+            const nameAndPriority = document.createElement('div');
+            nameAndPriority.classList.add('name-and-priority');
+    
+            const checkbox = document.createElement('div');
+    
+            const checkboxInput = document.createElement('input');
+            checkboxInput.dataset.id = newArr[i].tasks[j].id;
+            checkboxInput.classList.add('checkbox');
+            checkboxInput.type = 'checkbox';
+    
+            checkbox.appendChild(checkboxInput);
+    
+            nameAndPriority.appendChild(checkbox);
+    
+            const name = document.createElement('div');
+            name.textContent = newArr[i].tasks[j].name;
+            name.classList.add('name');
+    
+            nameAndPriority.appendChild(name);
+    
+            divTasks.appendChild(nameAndPriority);
+    
+            const deleteDiv = document.createElement('div');
+            deleteDiv.classList.add('delete');
+    
+            const editButton = document.createElement('button');
+            editButton.classList.add('editButton');
+            editButton.textContent = 'edit';
+            editButton.dataset.id = newArr[i].tasks[j].id;
+    
+            deleteDiv.appendChild(editButton)
+    
+            const viewMoreBtn = document.createElement('button');
+            viewMoreBtn.classList.add('viewMoreBtn');
+            viewMoreBtn.textContent = 'view more';
+            viewMoreBtn.dataset.id = newArr[i].tasks[j].id;
+    
+            deleteDiv.appendChild(viewMoreBtn);
+    
+            const materialIconsDelete = document.createElement('span');
+            materialIconsDelete.classList.add('material-icons');
+            materialIconsDelete.classList.add('delete');
+            materialIconsDelete.textContent = 'delete';
+            materialIconsDelete.dataset.id = newArr[i].tasks[j].id;
+    
+            const priority = document.createElement('div');
+            priority.classList.add('priority');
+    
+            deleteDiv.appendChild(materialIconsDelete);
+        
+            divTasks.appendChild(deleteDiv);
+    
+            manyProjects.appendChild(divTasks);
+    
+            projectsContent.appendChild(manyProjects);
+        }
+    }
+}
 
 const addItem = document.querySelector('.addItem');
 const addProject = document.querySelector('.addProject');
@@ -137,14 +231,14 @@ addTasksButton.addEventListener('click', () => {
         return;
     }
 
-    if(nowProject == 'complited'){
+    if(nowProject == 'complited' || nowProject == 'all'){
         nowProject = 'inbox';
         newArr[1].tasks.push({
             name: nameTasks.value,
             decription: descriptiontasks.value,
             date: dateTasks.value,
             priority: priorityTasksInput.value,
-            id: Math.floor(Math.random() * 1000),
+            id: Math.floor(Math.random() * 100000),
         })
 
         count = 0;
@@ -157,7 +251,7 @@ addTasksButton.addEventListener('click', () => {
                         decription: descriptiontasks.value,
                         date: dateTasks.value,
                         priority: priorityTasksInput.value,
-                        id: Math.floor(Math.random() * 1000),
+                        id: Math.floor(Math.random() * 100000),
                     })
                     count = i;
                 }
@@ -169,7 +263,7 @@ addTasksButton.addEventListener('click', () => {
                 decription: descriptiontasks.value,
                 date: dateTasks.value,
                 priority: priorityTasksInput.value,
-                id: Math.floor(Math.random() * 1000),
+                id: Math.floor(Math.random() * 100000),
             })
     
             count = 0;
@@ -177,6 +271,8 @@ addTasksButton.addEventListener('click', () => {
     }
 
     createDiv();
+
+    window.localStorage.setItem('newArr', JSON.stringify(newArr));
 
     console.log(newArr);
     console.log(nowProject);
@@ -253,20 +349,19 @@ addNewProject.addEventListener('click', () => {
     bgTwo.classList.toggle('visiblity');
     addToPageNameProject();
     createDiv();
+    window.localStorage.setItem('newArr', JSON.stringify(newArr));
 })
 
 document.addEventListener('click', (e) => {
     if(e.target.classList.contains('viewMoreBtn')){
         let indexMain = e.target.dataset.id;
 
-        for(let i = 0; i < newArr.length; i++){
-            if(newArr[i].name == nowProject){
-                indexMainOne = i;
-            }
-        }
-        for(let j = 0; j < newArr[indexMainOne].tasks.length; j++){
-            if(newArr[indexMainOne].tasks[j].id == indexMain){
-                indexMainTwo = j;
+        for(let i = 1; i < newArr.length; i++){
+            for(let j = 0; j < newArr[i].tasks.length; j++){
+                if(newArr[i].tasks[j].id == indexMain){
+                    indexMainOne = i
+                    indexMainTwo = j;
+                }
             }
         }
 
@@ -286,22 +381,27 @@ document.addEventListener('click', (e) => {
             popUpDelete.classList.add('visiblity');
         })
         buttonDeleteTasks.addEventListener('click', () => {
-            for(let i = 0; i < newArr.length; i++){
-                if(newArr[i].name == nowProject){
-                    index = i;
-                }
-            }
-
-            for(let j = 0; j < newArr[index].tasks.length; j++){
-                if(newArr[index].tasks[j].id == e.target.dataset.id){
-                    indexTwo = j;
+            for(let i = 1; i < newArr.length; i++){
+                for(let j = 0; j < newArr[i].tasks.length; j++){
+                    if(newArr[i].tasks[j].id == e.target.dataset.id){
+                        index = i
+                        indexTwo = j;
+                    }
                 }
             }
 
             newArr[index].tasks.splice(indexTwo, 1);
-            createDiv();
+            
+            if(nowProject == 'all'){
+                allTasks();
+            }else{
+                createDiv();
+            }
+
             console.log(newArr);
             popUpDelete.classList.add('visiblity');
+
+            window.localStorage.setItem('newArr', JSON.stringify(newArr));
         })
     }
 })
@@ -312,26 +412,26 @@ document.addEventListener('click', (e) => {
 
     if(e.target.classList.contains('checkbox')){
         if(e.target.checked){
-            for(let i = 0; i < newArr.length; i++){
-                if(newArr[i].name == nowProject){
-                    index = i;
+            for(let i = 1; i < newArr.length; i++){
+                for(let j = 0; j < newArr[i].tasks.length; j++){
+                    if(newArr[i].tasks[j].id == e.target.dataset.id){
+                        index = i
+                        indexTwo = j;
+                    }
                 }
             }
 
-            for(let j = 0; j < newArr[index].tasks.length; j++){
-                console.log(j);
-                if(newArr[index].tasks[j].id == e.target.dataset.id){
-                    indexTwo = j;
-                }
-            }
             complitedTasks.push(newArr[index].tasks[indexTwo]);
 
             newArr[index].tasks.splice(indexTwo, 1);
-            
-            console.log(newArr);
 
-            createDiv();
+            if(nowProject == 'all'){
+                allTasks();
+            }else{
+                createDiv();
+            }
 
+            window.localStorage.setItem('newArr', JSON.stringify(newArr));
         }
     }else{
         return false;
@@ -343,6 +443,8 @@ document.addEventListener('click', (e) => {
         console.log([...complitedTasks]);
         nowProject = 'complited';
         complitedDiv();
+
+        window.localStorage.setItem('newArr', JSON.stringify(newArr));
     }
 })
 
@@ -505,6 +607,8 @@ document.addEventListener('click', (e) => {
             complitedDiv();
             console.log(newArr);
             bgFive.classList.add('visiblity');
+
+            window.localStorage.setItem('newArr', JSON.stringify(newArr));
         })
     }
 })
@@ -566,28 +670,29 @@ const validUpdate = () => {
 }
 
 document.addEventListener('click', (e) => {
+    
+    let test = 0;
+    let testTwo = 0;
+
     if(e.target.classList.contains('editButton')){
-        let index;
-        let indexTwo;
 
-        for(let i = 0; i < newArr.length; i++){
-            if(newArr[i].name == nowProject){
-                index = i;
+        for(let i = 1; i < newArr.length; i++){
+            for(let j = 0; j < newArr[i].tasks.length; j++){
+                if(newArr[i].tasks[j].id == e.target.dataset.id){
+                    test = i;
+                    testTwo = j;
+                }
             }
         }
 
-        for(let j = 0; j < newArr[index].tasks.length; j++){
-            if(newArr[index].tasks[j].id == e.target.dataset.id){
-                indexTwo = j;
-            }
-        }
-
-        updateNameTasks.value = newArr[index].tasks[indexTwo].name;
-        updateDescriptiontasks.value = newArr[index].tasks[indexTwo].decription;
-        updateDateTasks.value = newArr[index].tasks[indexTwo].date;
-        updatePriorityTasksInput.value = newArr[index].tasks[indexTwo].priority;
+        updateNameTasks.value = newArr[test].tasks[testTwo].name;
+        updateDescriptiontasks.value = newArr[test].tasks[testTwo].decription;
+        updateDateTasks.value = newArr[test].tasks[testTwo].date;
+        updatePriorityTasksInput.value = newArr[test].tasks[testTwo].priority;
 
         updatePopUp.classList.remove('visiblity');
+
+        console.log(test, testTwo);
 
         closeTasksUpdate.addEventListener('click', () => {
             updateNameTasks.value = '';
@@ -603,26 +708,40 @@ document.addEventListener('click', (e) => {
             if(validUpdate().countTest){
                 return;
             }else{
-                const newObj = {
-                    name: updateNameTasks.value,
-                    decription: updateDescriptiontasks.value,
-                    date: updateDateTasks.value,
-                    priority: updatePriorityTasksInput.value,
-                    id: newArr[index].tasks[indexTwo].id,
+                try{
+                    const newObj = {
+                        name: updateNameTasks.value,
+                        decription: updateDescriptiontasks.value,
+                        date: updateDateTasks.value,
+                        priority: updatePriorityTasksInput.value,
+                        id: e.target.dataset.id,
+                    }
+    
+                    newArr[test].tasks.splice(testTwo, 1, newObj);
+                    console.log(test, testTwo);
+    
+                    updateNameTasks.value = '';
+                    updateDescriptiontasks.value = '';
+                    updateDateTasks.value = '';
+                    updatePriorityTasksInput.value = '';
+    
+                    test = 0;
+                    testTwo = 0;
+    
+                    updatePopUp.classList.add('visiblity');
+                    
+                    if(nowProject == 'all'){
+                        allTasks();
+                    }else{
+                        createDiv();
+                    }
+    
+                    console.log(newArr);
+
+                    window.localStorage.setItem('newArr', JSON.stringify(newArr));
+                }catch(err){
+                    console.log(err);
                 }
-
-                newArr[index].tasks.splice(indexTwo, 1, newObj);
-
-                updateNameTasks.value = '';
-                updateDescriptiontasks.value = '';
-                updateDateTasks.value = '';
-                updatePriorityTasksInput.value = '';
-
-                updatePopUp.classList.add('visiblity');
-                
-                createDiv();
-
-                console.log(newArr);
             }
         })
     }
@@ -801,7 +920,9 @@ const addToPageNameProject = () => {
             p.classList.add('projectsNameInPage');
             p.textContent = newArr[key].name;
 
-            root.appendChild(p);
+            if(p.textContent){
+                root.appendChild(p);
+            }
         }
     }
     projectsNameInPage = document.querySelectorAll('.projectsNameInPage');
