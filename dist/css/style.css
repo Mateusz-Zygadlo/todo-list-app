@@ -568,14 +568,14 @@ p{
     }
     .projects-folder{
         position: absolute;
-        width: 300px;
-        height: calc(100vh - 40px);
+        width: 260px;
+        height: calc(100vh - 50px);
         background-color: lightskyblue;
         padding: 20px;
         z-index: 100;
         top: 0;
         left: 0;
-        margin-top: 40px;
+        margin-top: 50px;
         z-index: 9;
     }
 }

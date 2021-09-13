@@ -1,6 +1,8 @@
 import navBar from "./components/navBar";
+import mainPage from './components/mainPage';
 
 navBar();
+mainPage();
 
 
 const viewMore = document.querySelector('.view-more');
@@ -916,20 +918,20 @@ const addDiv = () => {
 const addToPageNameProject = () => {
     root.textContent = '';
     
-    for(key in newArr){
-        
-        if(newArr[key].name == 'inbox'){
-            
+    for(let i = 1; i < newArr.length; i++){
+        if(newArr[i].name == 'inbox'){
+
         }else{
             const p = document.createElement('p');
             p.classList.add('projectsNameInPage');
-            p.textContent = newArr[key].name;
+            p.textContent = newArr[i].name;
 
             if(p.textContent){
                 root.appendChild(p);
             }
         }
     }
+
     projectsNameInPage = document.querySelectorAll('.projectsNameInPage');
 }
 
