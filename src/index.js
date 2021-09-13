@@ -1,3 +1,8 @@
+import navBar from "./components/navBar";
+
+navBar();
+
+
 const viewMore = document.querySelector('.view-more');
 const more = document.querySelector('.more');
 const projectsDiv = document.querySelector('.projects');
