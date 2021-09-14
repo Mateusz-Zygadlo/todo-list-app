@@ -3,27 +3,19 @@ import mainPage from './components/mainPage';
 import newProjectPopUp from './components/newProjectPopUp';
 import addTasksPopUp from './components/addTasksPopUp';
 import updateTasksPopUp from './components/updateTasksPopUp';
+import deletePopUp from './components/deletePopUp';
+import deletePopUpComplitedTasks from './components/deletePopUpComplitedTasks';
+import addTaskButton from './components/addTaskButton';
 
 navBar();
 mainPage();
 newProjectPopUp();
 addTasksPopUp();
 updateTasksPopUp();
-
-
-const viewMore = document.querySelector('.view-more');
-const more = document.querySelector('.more');
-const projectsDiv = document.querySelector('.projects');
-const projectFolder = document.querySelector('.folder');
-const menu = document.querySelector('.menu');
-const main = document.querySelector('.mainMain');
-
-const bg = document.querySelector('.bg');
-const bgTwo = document.querySelector('.bgTwo');
+deletePopUp();
+deletePopUpComplitedTasks();
 
 const complitedTasks = [];
-
-const inboxMain = document.querySelector('.inbox');
 
 const newArr = [
     complitedTasks, 
@@ -34,16 +26,29 @@ const newArr = [
 
 window.localStorage.setItem('newArr', JSON.stringify(newArr));
 
-let nowProject;
-let count;
+const viewMore = document.querySelector('.view-more');
+const more = document.querySelector('.more');
+const projectsDiv = document.querySelector('.projects');
+const projectFolder = document.querySelector('.folder');
+const main = document.querySelector('.mainMain');
 
-let deleteButton = document.querySelectorAll('.delete');
+const bg = document.querySelector('.bg');
+const bgTwo = document.querySelector('.bgTwo');
+
+const inboxMain = document.querySelector('.inbox');
+
+let nowProject;
 
 const allClick = document.querySelector('.allClick');
 
 allClick.addEventListener('click', () => {
     nowProject = 'all';
     allTasks();
+})
+
+inboxMain.addEventListener('click', () => {
+    nowProject = 'inbox';
+    createDiv();
 })
 
 const allTasks = () => {
@@ -140,14 +145,8 @@ const addNewProject = document.querySelector('.add');
 const addProjectInput = document.querySelector('.addProjectInput');
 
 const root = document.querySelector('.root');
-let projectsNameInPage = document.querySelectorAll('.projectsNameInPage');
 
 const inboxClick = document.querySelector('.inboxClick');
-
-const nameTasks = document.querySelector('.nameTasks');
-const descriptiontasks = document.querySelector('.descriptiontasks');
-const dateTasks = document.querySelector('.dateTasks');
-const priorityTasksInput = document.querySelector('.priorityTasksInput');
 
 const addNav = document.querySelector('.addNav');
 const addtasks = document.querySelector('.addtasks');
@@ -162,10 +161,7 @@ const noValidThree = document.querySelector('.noValidThree');
 const noValidFour = document.querySelector('.noValidFour');
 const noValidFive = document.querySelector('.noValidFive');
 
-inboxMain.addEventListener('click', () => {
-    nowProject = 'inbox';
-    createDiv();
-})
+let deleteButton = document.querySelectorAll('.delete');
 
 closeTasksClick.addEventListener('click', () => {
     nameTasks.value = '';
@@ -239,64 +235,7 @@ const isValid = () => {
 }
 
 addTasksButton.addEventListener('click', () => {
-
-    if(isValid().count){
-        return;
-    }
-
-    if(nowProject == 'complited' || nowProject == 'all'){
-        nowProject = 'inbox';
-        newArr[1].tasks.push({
-            name: nameTasks.value,
-            decription: descriptiontasks.value,
-            date: dateTasks.value,
-            priority: priorityTasksInput.value,
-            id: Math.floor(Math.random() * 100000),
-        })
-
-        count = 0;
-    }else{
-        if(nowProject){
-            for(let i = 0; i < newArr.length; i++){
-                if(newArr[i].name == nowProject){
-                    newArr[i].tasks.push({
-                        name: nameTasks.value,
-                        decription: descriptiontasks.value,
-                        date: dateTasks.value,
-                        priority: priorityTasksInput.value,
-                        id: Math.floor(Math.random() * 100000),
-                    })
-                    count = i;
-                }
-            }
-        }else{
-            nowProject = 'inbox';
-            newArr[1].tasks.push({
-                name: nameTasks.value,
-                decription: descriptiontasks.value,
-                date: dateTasks.value,
-                priority: priorityTasksInput.value,
-                id: Math.floor(Math.random() * 100000),
-            })
     
-            count = 0;
-        } 
-    }
-
-    createDiv();
-
-    window.localStorage.setItem('newArr', JSON.stringify(newArr));
-
-    console.log(newArr);
-    console.log(nowProject);
-
-    deleteButton = document.querySelectorAll('.delete');
-
-    nameTasks.value = '';
-    descriptiontasks.value = '';
-
-    addtasks.classList.toggle('visiblity');
-    bg.classList.toggle('visiblity');
 })
 
 inboxClick.addEventListener('click', () => {
