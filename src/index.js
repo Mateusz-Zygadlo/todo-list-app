@@ -1,10 +1,12 @@
 import navBar from "./components/navBar";
 import mainPage from './components/mainPage';
 import newProjectPopUp from './components/newProjectPopUp';
+import addTasksPopUp from './components/addTasksPopUp';
 
 navBar();
 mainPage();
 newProjectPopUp();
+addTasksPopUp();
 
 
 const viewMore = document.querySelector('.view-more');
