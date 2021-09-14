@@ -5,7 +5,9 @@ import addTasksPopUp from './components/addTasksPopUp';
 import updateTasksPopUp from './components/updateTasksPopUp';
 import deletePopUp from './components/deletePopUp';
 import deletePopUpComplitedTasks from './components/deletePopUpComplitedTasks';
-import addTaskButton from './components/addTaskButton';
+import createDiv from "./components/createTaskDiv";
+import nowPageInTasks from './components/nowPageInTasks';
+import allTasks from './components/allTasks';
 
 navBar();
 mainPage();
@@ -38,103 +40,17 @@ const bgTwo = document.querySelector('.bgTwo');
 const inboxMain = document.querySelector('.inbox');
 
 let nowProject;
+let count;
+
+let deleteButton = document.querySelectorAll('.delete');
 
 const allClick = document.querySelector('.allClick');
 
 allClick.addEventListener('click', () => {
     nowProject = 'all';
-    allTasks();
+    allTasks(newArr, nowProject);
 })
 
-inboxMain.addEventListener('click', () => {
-    nowProject = 'inbox';
-    createDiv();
-})
-
-const allTasks = () => {
-    
-    let borderColorClass;
-    projectsContent.textContent = '';
-
-    nowPageInTasks(nowProject);
-
-    for(let i = 1; i < newArr.length; i++){
-        for(let j = 0; j < newArr[i].tasks.length; j++){
-
-            if(newArr[i].tasks[j].priority == 'low'){
-                borderColorClass = 'lightblue';
-            }else if(newArr[i].tasks[j].priority == 'medium'){
-                borderColorClass = 'orange';
-            }else if(newArr[i].tasks[j].priority == 'high'){
-                borderColorClass = 'red';
-            }
-    
-            const manyProjects = document.createElement('div');
-            manyProjects.classList.add('manyProjects');
-    
-            const divTasks = document.createElement('div');
-            divTasks.dataset.id = newArr[i].tasks[j].id;
-            divTasks.classList.add('tasks');
-            divTasks.classList.add(borderColorClass);
-    
-            const nameAndPriority = document.createElement('div');
-            nameAndPriority.classList.add('name-and-priority');
-    
-            const checkbox = document.createElement('div');
-    
-            const checkboxInput = document.createElement('input');
-            checkboxInput.dataset.id = newArr[i].tasks[j].id;
-            checkboxInput.classList.add('checkbox');
-            checkboxInput.type = 'checkbox';
-    
-            checkbox.appendChild(checkboxInput);
-    
-            nameAndPriority.appendChild(checkbox);
-    
-            const name = document.createElement('div');
-            name.textContent = newArr[i].tasks[j].name;
-            name.classList.add('name');
-    
-            nameAndPriority.appendChild(name);
-    
-            divTasks.appendChild(nameAndPriority);
-    
-            const deleteDiv = document.createElement('div');
-            deleteDiv.classList.add('delete');
-    
-            const editButton = document.createElement('button');
-            editButton.classList.add('editButton');
-            editButton.textContent = 'edit';
-            editButton.dataset.id = newArr[i].tasks[j].id;
-    
-            deleteDiv.appendChild(editButton)
-    
-            const viewMoreBtn = document.createElement('button');
-            viewMoreBtn.classList.add('viewMoreBtn');
-            viewMoreBtn.textContent = 'view more';
-            viewMoreBtn.dataset.id = newArr[i].tasks[j].id;
-    
-            deleteDiv.appendChild(viewMoreBtn);
-    
-            const materialIconsDelete = document.createElement('span');
-            materialIconsDelete.classList.add('material-icons');
-            materialIconsDelete.classList.add('delete');
-            materialIconsDelete.textContent = 'delete';
-            materialIconsDelete.dataset.id = newArr[i].tasks[j].id;
-    
-            const priority = document.createElement('div');
-            priority.classList.add('priority');
-    
-            deleteDiv.appendChild(materialIconsDelete);
-        
-            divTasks.appendChild(deleteDiv);
-    
-            manyProjects.appendChild(divTasks);
-    
-            projectsContent.appendChild(manyProjects);
-        }
-    }
-}
 
 const addItem = document.querySelector('.addItem');
 const addProject = document.querySelector('.addProject');
@@ -145,8 +61,14 @@ const addNewProject = document.querySelector('.add');
 const addProjectInput = document.querySelector('.addProjectInput');
 
 const root = document.querySelector('.root');
+let projectsNameInPage = document.querySelectorAll('.projectsNameInPage');
 
 const inboxClick = document.querySelector('.inboxClick');
+
+const nameTasks = document.querySelector('.nameTasks');
+const descriptiontasks = document.querySelector('.descriptiontasks');
+const dateTasks = document.querySelector('.dateTasks');
+const priorityTasksInput = document.querySelector('.priorityTasksInput');
 
 const addNav = document.querySelector('.addNav');
 const addtasks = document.querySelector('.addtasks');
@@ -161,7 +83,10 @@ const noValidThree = document.querySelector('.noValidThree');
 const noValidFour = document.querySelector('.noValidFour');
 const noValidFive = document.querySelector('.noValidFive');
 
-let deleteButton = document.querySelectorAll('.delete');
+inboxMain.addEventListener('click', () => {
+    nowProject = 'inbox';
+    createDiv(newArr, nowProject);
+})
 
 closeTasksClick.addEventListener('click', () => {
     nameTasks.value = '';
@@ -235,12 +160,69 @@ const isValid = () => {
 }
 
 addTasksButton.addEventListener('click', () => {
+
+    if(isValid().count){
+        return;
+    }
+
+    if(nowProject == 'complited' || nowProject == 'all'){
+        nowProject = 'inbox';
+        newArr[1].tasks.push({
+            name: nameTasks.value,
+            decription: descriptiontasks.value,
+            date: dateTasks.value,
+            priority: priorityTasksInput.value,
+            id: Math.floor(Math.random() * 100000),
+        })
+
+        count = 0;
+    }else{
+        if(nowProject){
+            for(let i = 0; i < newArr.length; i++){
+                if(newArr[i].name == nowProject){
+                    newArr[i].tasks.push({
+                        name: nameTasks.value,
+                        decription: descriptiontasks.value,
+                        date: dateTasks.value,
+                        priority: priorityTasksInput.value,
+                        id: Math.floor(Math.random() * 100000),
+                    })
+                    count = i;
+                }
+            }
+        }else{
+            nowProject = 'inbox';
+            newArr[1].tasks.push({
+                name: nameTasks.value,
+                decription: descriptiontasks.value,
+                date: dateTasks.value,
+                priority: priorityTasksInput.value,
+                id: Math.floor(Math.random() * 100000),
+            })
     
+            count = 0;
+        } 
+    }
+
+    createDiv(newArr, nowProject);
+
+    window.localStorage.setItem('newArr', JSON.stringify(newArr));
+
+    console.log(newArr);
+    console.log(nowProject);
+
+    deleteButton = document.querySelectorAll('.delete');
+
+    nameTasks.value = '';
+    descriptiontasks.value = '';
+
+    addtasks.classList.toggle('visiblity');
+    bg.classList.toggle('visiblity');
 })
 
 inboxClick.addEventListener('click', () => {
     nowProject = 'inbox';
-    createDiv();
+    createDiv(newArr, nowProject);
     console.log(newArr);
 })
 
@@ -255,7 +237,7 @@ document.addEventListener('click', (e) => {
         return;
     }
 
-    createDiv();
+    createDiv(newArr, nowProject);
 })
 
 document.addEventListener('click', (e) => {
@@ -300,7 +282,7 @@ addNewProject.addEventListener('click', () => {
     addProject.classList.add('visiblity');
     bgTwo.classList.toggle('visiblity');
     addToPageNameProject();
-    createDiv();
+    createDiv(newArr, nowProject);
     window.localStorage.setItem('newArr', JSON.stringify(newArr));
 })
 
@@ -327,6 +309,8 @@ const popUpDelete = document.querySelector('.bgFour');
 
 document.addEventListener('click', (e) => {
     if(e.target.classList.contains('delete')){
+        let index = 0;
+        let indexTwo = 0;
         popUpDelete.classList.remove('visiblity');
         
         buttonCancel.addEventListener('click', () => {
@@ -345,7 +329,7 @@ document.addEventListener('click', (e) => {
             newArr[index].tasks.splice(indexTwo, 1);
             
             if(nowProject == 'all'){
-                allTasks();
+                allTasks(newArr, nowProject);
             }else{
                 createDiv();
             }
@@ -378,7 +362,7 @@ document.addEventListener('click', (e) => {
             newArr[index].tasks.splice(indexTwo, 1);
 
             if(nowProject == 'all'){
-                allTasks();
+                allTasks(newArr, nowProject);
             }else{
                 createDiv();
             }
@@ -588,33 +572,21 @@ const validUpdate = () => {
         noValidUpdateOne.classList.remove('visiblity');
         updateNameTasks.style.border = '1px solid red';
         countTest++;
-    }else{
-        noValidUpdateOne.classList.add('visiblity');
-        updateNameTasks.style.border = '1px solid black';
     }
     if(!updateDescriptiontasks.value){
         noValidUpdateTwo.classList.remove('visiblity');
         updateDescriptiontasks.style.border = '1px solid red';
         countTest++;
-    }else{
-        noValidUpdateTwo.classList.add('visiblity');
-        updateDescriptiontasks.style.border = '1px solid black';
     }
     if(!updateDateTasks.value){
         noValidUpdateThree.classList.remove('visiblity');
         updateDateTasks.style.border = '1px solid red';
         countTest++;
-    }else{
-        noValidUpdateThree.classList.add('visiblity');
-        updateDateTasks.style.border = '1px solid black';
     }
     if(!updatePriorityTasksInput.value){
         noValidUpdateFour.classList.remove('visiblity');
         updatePriorityTasksInput.style.border = '1px solid red';
         countTest++;
-    }else{
-        noValidUpdateFour.classList.add('visiblity');
-        updatePriorityTasksInput.style.border = '1px solid black';
     }
 
     return{
@@ -623,13 +595,15 @@ const validUpdate = () => {
 }
 
 document.addEventListener('click', (e) => {
-    
-    let test = 0;
-    let testTwo = 0;
-
     if(e.target.classList.contains('editButton')){
 
-        for(let i = 1; i < newArr.length; i++){
+        let test = 0;
+        let testTwo = 0;
+
+        for(let i = 0; i < newArr.length; i++){
+            if(!newArr[i].tasks){
+                i++;
+            }
             for(let j = 0; j < newArr[i].tasks.length; j++){
                 if(newArr[i].tasks[j].id == e.target.dataset.id){
                     test = i;
@@ -638,14 +612,14 @@ document.addEventListener('click', (e) => {
             }
         }
 
+        console.log(test, testTwo);
+
         updateNameTasks.value = newArr[test].tasks[testTwo].name;
         updateDescriptiontasks.value = newArr[test].tasks[testTwo].decription;
         updateDateTasks.value = newArr[test].tasks[testTwo].date;
         updatePriorityTasksInput.value = newArr[test].tasks[testTwo].priority;
 
         updatePopUp.classList.remove('visiblity');
-
-        console.log(test, testTwo);
 
         document.addEventListener('click', (e) => {
             if(e.target.classList.contains('closeTasksClick')){
@@ -659,147 +633,47 @@ document.addEventListener('click', (e) => {
         })
 
         document.addEventListener('click', (e) => {
-            if(e.target.classList.contains('UpdateTasksButton')){
-                if(validUpdate().countTest){
-                    return;
-                }else{
-                    try{
-                        const newObj = {
-                            name: updateNameTasks.value,
-                            decription: updateDescriptiontasks.value,
-                            date: updateDateTasks.value,
-                            priority: updatePriorityTasksInput.value,
-                            id: e.target.dataset.id,
-                        }
-        
-                        newArr[test].tasks.splice(testTwo, 1, newObj);
-                        console.log(test, testTwo);
-        
-                        updateNameTasks.value = '';
-                        updateDescriptiontasks.value = '';
-                        updateDateTasks.value = '';
-                        updatePriorityTasksInput.value = '';
-        
-                        test = 0;
-                        testTwo = 0;
-        
-                        updatePopUp.classList.add('visiblity');
-                        
-                        if(nowProject == 'all'){
-                            allTasks();
-                        }else{
-                            createDiv();
-                        }
-        
-                        console.log(newArr);
-        
-                        window.localStorage.setItem('newArr', JSON.stringify(newArr));
-                    }catch(err){
-                        console.log(err);
-                    }
+                if(e.target.classList.contains('UpdateTasksButton')){
+                    if(validUpdate().countTest){
+                        return;
+                    }else{
+                        try{
+                            newArr[test].tasks[testTwo].name = updateNameTasks.value;
+                            newArr[test].tasks[testTwo].decription = updateDescriptiontasks.value;
+                            newArr[test].tasks[testTwo].date = updateDateTasks.value;
+                            newArr[test].tasks[testTwo].priority = updatePriorityTasksInput.value;
+
+                            console.log(test, testTwo);
+    
+                            updateNameTasks.value = '';
+                            updateDescriptiontasks.value = '';
+                            updateDateTasks.value = '';
+                            updatePriorityTasksInput.value = '';
+
+                            if(nowProject == 'all'){
+                                allTasks(newArr, nowProject);
+                            }else{
+                                createDiv(newArr, nowProject);
+                            }
+
+                            window.localStorage.setItem('newArr', JSON.stringify(newArr));
+    
+                            test = 0;
+                            testTwo = 0;
+    
+                            updatePopUp.classList.add('visiblity');
+    
+                            console.log(newArr);
+    
+                        }catch(err){
+                            console.log(err);
+                        }  
                 }
-            }
+            }   
         })
     }
 })
 
-const nowPageInTasks = (item) => {
-    const nowPageName = document.createElement('div');
-    nowPageName.textContent = item;
-    nowPageName.classList.add('nowPageName');
-
-    projectsContent.appendChild(nowPageName);
-}
-
-const createDiv = () => {
-
-    let index;
-    let borderColorClass;
-    projectsContent.textContent = '';
-
-    nowPageInTasks(nowProject);
-
-    for(let i = 0; i < newArr.length; i++){
-        if(newArr[i].name == nowProject){
-            index = i;
-        }
-    }
-
-    for(let j = 0; j < newArr[index].tasks.length; j++){
-
-        if(newArr[index].tasks[j].priority == 'low'){
-            borderColorClass = 'lightblue';
-        }else if(newArr[index].tasks[j].priority == 'medium'){
-            borderColorClass = 'orange';
-        }else if(newArr[index].tasks[j].priority == 'high'){
-            borderColorClass = 'red';
-        }
-
-        const manyProjects = document.createElement('div');
-        manyProjects.classList.add('manyProjects');
-
-        const divTasks = document.createElement('div');
-        divTasks.dataset.id = newArr[index].tasks[j].id;
-        divTasks.classList.add('tasks');
-        divTasks.classList.add(borderColorClass);
-
-        const nameAndPriority = document.createElement('div');
-        nameAndPriority.classList.add('name-and-priority');
-
-        const checkbox = document.createElement('div');
-
-        const checkboxInput = document.createElement('input');
-        checkboxInput.dataset.id = newArr[index].tasks[j].id;
-        checkboxInput.classList.add('checkbox');
-        checkboxInput.type = 'checkbox';
-
-        checkbox.appendChild(checkboxInput);
-
-        nameAndPriority.appendChild(checkbox);
-
-        const name = document.createElement('div');
-        name.textContent = newArr[index].tasks[j].name;
-        name.classList.add('name');
-
-        nameAndPriority.appendChild(name);
-
-        divTasks.appendChild(nameAndPriority);
-
-        const deleteDiv = document.createElement('div');
-        deleteDiv.classList.add('delete');
-
-        const editButton = document.createElement('button');
-        editButton.classList.add('editButton');
-        editButton.textContent = 'edit';
-        editButton.dataset.id = newArr[index].tasks[j].id;
-
-        deleteDiv.appendChild(editButton)
-
-        const viewMoreBtn = document.createElement('button');
-        viewMoreBtn.classList.add('viewMoreBtn');
-        viewMoreBtn.textContent = 'view more';
-        viewMoreBtn.dataset.id = newArr[index].tasks[j].id;
-
-        deleteDiv.appendChild(viewMoreBtn);
-
-        const materialIconsDelete = document.createElement('span');
-        materialIconsDelete.classList.add('material-icons');
-        materialIconsDelete.classList.add('delete');
-        materialIconsDelete.textContent = 'delete';
-        materialIconsDelete.dataset.id = newArr[index].tasks[j].id;
-
-        const priority = document.createElement('div');
-        priority.classList.add('priority');
-
-        deleteDiv.appendChild(materialIconsDelete);
-    
-        divTasks.appendChild(deleteDiv);
-
-        manyProjects.appendChild(divTasks);
-
-        projectsContent.appendChild(manyProjects);
-    }
-}
 
 let indexMainOne;
 let indexMainTwo;
@@ -884,7 +758,7 @@ const addToPageNameProject = () => {
     projectsNameInPage = document.querySelectorAll('.projectsNameInPage');
 }
 
-viewMore.addEventListener('click', () => {
+const expand_less_more = () => {
     if(more.textContent == 'expand_more'){
         more.textContent = 'expand_less';
     }else{
@@ -894,7 +768,9 @@ viewMore.addEventListener('click', () => {
     projectsDiv.classList.toggle('visiblity');
     projectFolder.classList.toggle('overflow');
     projectFolder.classList.toggle('overflowHidden');
-})
+}
+
+viewMore.addEventListener('click', expand_less_more)
 
 nowProject = 'inbox';
-createDiv();
+createDiv(newArr, nowProject);
