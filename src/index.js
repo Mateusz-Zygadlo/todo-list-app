@@ -2,11 +2,13 @@ import navBar from "./components/navBar";
 import mainPage from './components/mainPage';
 import newProjectPopUp from './components/newProjectPopUp';
 import addTasksPopUp from './components/addTasksPopUp';
+import updateTasksPopUp from './components/updateTasksPopUp';
 
 navBar();
 mainPage();
 newProjectPopUp();
 addTasksPopUp();
+updateTasksPopUp();
 
 
 const viewMore = document.querySelector('.view-more');
@@ -637,7 +639,8 @@ const noValidUpdateTwo = document.querySelector('.noValidUpdateTwo');
 const noValidUpdateThree = document.querySelector('.noValidUpdateThree');
 const noValidUpdateFour = document.querySelector('.noValidUpdateFour');
 
-const UpdateTasksButton = document.querySelector('.UpdateTasksButton');
+const UpdateTasksButton = document.querySelector('.UpdateTasksButton')
+
 
 const validUpdate = () => {
     let countTest = 0;
@@ -705,53 +708,56 @@ document.addEventListener('click', (e) => {
 
         console.log(test, testTwo);
 
-        closeTasksUpdate.addEventListener('click', () => {
-            updateNameTasks.value = '';
-            updateDescriptiontasks.value = '';
-            updateDateTasks.value = '';
-            updatePriorityTasksInput.value = '';
-
-            updatePopUp.classList.add('visiblity');
+        document.addEventListener('click', (e) => {
+            if(e.target.classList.contains('closeTasksClick')){
+                updateNameTasks.value = '';
+                updateDescriptiontasks.value = '';
+                updateDateTasks.value = '';
+                updatePriorityTasksInput.value = '';
+        
+                updatePopUp.classList.add('visiblity');
+            }
         })
 
-        UpdateTasksButton.addEventListener('click', () => {
-            
-            if(validUpdate().countTest){
-                return;
-            }else{
-                try{
-                    const newObj = {
-                        name: updateNameTasks.value,
-                        decription: updateDescriptiontasks.value,
-                        date: updateDateTasks.value,
-                        priority: updatePriorityTasksInput.value,
-                        id: e.target.dataset.id,
+        document.addEventListener('click', (e) => {
+            if(e.target.classList.contains('UpdateTasksButton')){
+                if(validUpdate().countTest){
+                    return;
+                }else{
+                    try{
+                        const newObj = {
+                            name: updateNameTasks.value,
+                            decription: updateDescriptiontasks.value,
+                            date: updateDateTasks.value,
+                            priority: updatePriorityTasksInput.value,
+                            id: e.target.dataset.id,
+                        }
+        
+                        newArr[test].tasks.splice(testTwo, 1, newObj);
+                        console.log(test, testTwo);
+        
+                        updateNameTasks.value = '';
+                        updateDescriptiontasks.value = '';
+                        updateDateTasks.value = '';
+                        updatePriorityTasksInput.value = '';
+        
+                        test = 0;
+                        testTwo = 0;
+        
+                        updatePopUp.classList.add('visiblity');
+                        
+                        if(nowProject == 'all'){
+                            allTasks();
+                        }else{
+                            createDiv();
+                        }
+        
+                        console.log(newArr);
+        
+                        window.localStorage.setItem('newArr', JSON.stringify(newArr));
+                    }catch(err){
+                        console.log(err);
                     }
-    
-                    newArr[test].tasks.splice(testTwo, 1, newObj);
-                    console.log(test, testTwo);
-    
-                    updateNameTasks.value = '';
-                    updateDescriptiontasks.value = '';
-                    updateDateTasks.value = '';
-                    updatePriorityTasksInput.value = '';
-    
-                    test = 0;
-                    testTwo = 0;
-    
-                    updatePopUp.classList.add('visiblity');
-                    
-                    if(nowProject == 'all'){
-                        allTasks();
-                    }else{
-                        createDiv();
-                    }
-    
-                    console.log(newArr);
-
-                    window.localStorage.setItem('newArr', JSON.stringify(newArr));
-                }catch(err){
-                    console.log(err);
                 }
             }
         })
