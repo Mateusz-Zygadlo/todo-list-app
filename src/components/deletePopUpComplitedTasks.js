@@ -1,4 +1,5 @@
 const deletePopUpComplitedTasks = () => {
+    
     const rootApp = document.querySelector('.rootApp');
     
     const deletePopUpBg = document.createElement('div');
