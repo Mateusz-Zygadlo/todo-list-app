@@ -17,16 +17,21 @@ updateTasksPopUp();
 deletePopUp();
 deletePopUpComplitedTasks();
 
-const complitedTasks = [];
 
-const newArr = [
-    complitedTasks, 
-{ 
-    name: 'inbox',
-    tasks: [],
-}];
+let complitedTasks = [];
+let newArr = [];
 
-window.localStorage.setItem('newArr', JSON.stringify(newArr));
+if(localStorage.getItem('newArr')) {
+    newArr = JSON.parse(localStorage.getItem('newArr'));
+    complitedTasks = newArr[0];
+}else{
+    newArr = [
+        complitedTasks, 
+    { 
+        name: 'inbox',
+        tasks: [],
+    }];
+}
 
 const viewMore = document.querySelector('.view-more');
 const more = document.querySelector('.more');
@@ -41,7 +46,6 @@ const inboxMain = document.querySelector('.inbox');
 
 let nowProject;
 let count;
-
 let deleteButton = document.querySelectorAll('.delete');
 
 const allClick = document.querySelector('.allClick');
@@ -50,7 +54,6 @@ allClick.addEventListener('click', () => {
     nowProject = 'all';
     allTasks(newArr, nowProject);
 })
-
 
 const addItem = document.querySelector('.addItem');
 const addProject = document.querySelector('.addProject');
@@ -205,10 +208,7 @@ const addTasks = (newArr, nowProject) => {
 
     createDiv(newArr, nowProject);
 
-    window.localStorage.setItem('newArr', JSON.stringify(newArr));
-
-    console.log(newArr);
-    console.log(nowProject);
+    localStorage.setItem('newArr', JSON.stringify(newArr));
 
     deleteButton = document.querySelectorAll('.delete');
 
@@ -217,6 +217,7 @@ const addTasks = (newArr, nowProject) => {
 
     addtasks.classList.toggle('visiblity');
     bg.classList.toggle('visiblity');
+    addToPageNameProject(newArr);
 }
 
 addTasksButton.addEventListener('click', () => {
@@ -226,7 +227,6 @@ addTasksButton.addEventListener('click', () => {
 inboxClick.addEventListener('click', () => {
     nowProject = 'inbox';
     createDiv(newArr, nowProject);
-    console.log(newArr);
 })
 
 document.addEventListener('click', (e) => {
@@ -286,7 +286,7 @@ const addProjects = (newArr, nowProject) => {
     bgTwo.classList.toggle('visiblity');
     addToPageNameProject(newArr);
     createDiv(newArr, nowProject);
-    window.localStorage.setItem('newArr', JSON.stringify(newArr));
+    localStorage.setItem('newArr', JSON.stringify(newArr));
 }
 
 addNewProject.addEventListener('click', () => {
@@ -310,7 +310,7 @@ const viewMores = (id, newArr) => {
         }
     }
 
-    addDiv(indexMainOne, indexMainTwo);
+    addDiv(newArr, indexMainOne, indexMainTwo);
 }
 
 document.addEventListener('click', (e) => {
@@ -354,7 +354,7 @@ const deleteTask = (newArr, nowProject, id) => {
 
         popUpDelete.classList.add('visiblity');
 
-        window.localStorage.setItem('newArr', JSON.stringify(newArr));
+        localStorage.setItem('newArr', JSON.stringify(newArr));
     })
 }
 
@@ -390,13 +390,14 @@ const checkboxClick = (newArr, nowProject, id) => {
         createDiv(newArr, nowProject);
     }
 
-    window.localStorage.setItem('newArr', JSON.stringify(newArr));
+   localStorage.setItem('newArr', JSON.stringify(newArr));
 }
 
 document.addEventListener('click', (e) => {
     if(e.target.classList.contains('checkbox')){
         if(e.target.checked){
             checkboxClick(newArr, nowProject, e.target.dataset.id);
+            localStorage.setItem('newArr', JSON.stringify(newArr));
         }
     }
         
@@ -405,13 +406,82 @@ document.addEventListener('click', (e) => {
 
 document.addEventListener('click', (e) => {
     if(e.target.classList.contains('done')){
-        console.log([...complitedTasks]);
         nowProject = 'complited';
-        complitedDiv();
-
-        window.localStorage.setItem('newArr', JSON.stringify(newArr));
+        complitedDiv(complitedTasks, nowProject);
     }
 })
+
+const complitedDiv = (complitedTasks, nowProject) => {
+
+    const projectsContent = document.querySelector('.content');
+
+    projectsContent.textContent = '';
+    let borderColorClass;
+
+    nowPageInTasks(nowProject);
+    
+    for(let j = 0; j < complitedTasks.length; j++){
+        
+        if(complitedTasks[j].priority == 'low'){
+            borderColorClass = 'lightblue';
+        }else if(complitedTasks[j].priority == 'medium'){
+            borderColorClass = 'orange';
+        }else if(complitedTasks[j].priority == 'high'){
+            borderColorClass = 'red';
+        }
+
+        const manyProjects = document.createElement('div');
+        manyProjects.classList.add('manyProjects');
+
+        const divTasks = document.createElement('div');
+        divTasks.dataset.id = complitedTasks[j].id;
+        divTasks.classList.add('tasks');
+        divTasks.classList.add(borderColorClass);
+
+        const nameAndPriority = document.createElement('div');
+        nameAndPriority.classList.add('name-and-priority');
+
+        const checkbox = document.createElement('div');
+
+        nameAndPriority.appendChild(checkbox);
+
+        const name = document.createElement('div');
+        name.textContent = complitedTasks[j].name;
+        name.classList.add('name');
+
+        nameAndPriority.appendChild(name);
+
+        divTasks.appendChild(nameAndPriority);
+
+        const deleteDiv = document.createElement('div');
+        deleteDiv.classList.add('delete');
+
+        const viewMoreBtn = document.createElement('button');
+        viewMoreBtn.classList.add('viewMoreBtnComplited');
+        viewMoreBtn.textContent = 'view more';
+        viewMoreBtn.dataset.id = complitedTasks[j].id;
+
+        deleteDiv.appendChild(viewMoreBtn);
+
+        const deleteBtn = document.createElement('span');
+        deleteBtn.classList.add('material-icons');
+        deleteBtn.textContent = 'delete';
+        deleteBtn.classList.add('complitedTasksDeleteButton');
+        deleteBtn.dataset.id = complitedTasks[j].id;
+
+        deleteDiv.appendChild(deleteBtn);
+
+        const priority = document.createElement('div');
+        priority.classList.add('priority');
+    
+        divTasks.appendChild(deleteDiv);
+
+        manyProjects.appendChild(divTasks);
+
+        projectsContent.appendChild(manyProjects);
+
+    }
+}
 
 document.addEventListener('click', (e) => {
     if(e.target.classList.contains('viewMoreBtnComplited')){
@@ -480,77 +550,6 @@ const complitedViewMore = (test) => {
     document.body.appendChild(bgThree);
 }
 
-const complitedDiv = () => {
-
-    projectsContent.textContent = '';
-    let borderColorClass;
-
-    nowPageInTasks(nowProject);
-    
-    for(let j = 0; j < complitedTasks.length; j++){
-
-        
-        if(complitedTasks[j].priority == 'low'){
-            borderColorClass = 'lightblue';
-        }else if(complitedTasks[j].priority == 'medium'){
-            borderColorClass = 'orange';
-        }else if(complitedTasks[j].priority == 'high'){
-            borderColorClass = 'red';
-        }
-
-        const manyProjects = document.createElement('div');
-        manyProjects.classList.add('manyProjects');
-
-        const divTasks = document.createElement('div');
-        divTasks.dataset.id = complitedTasks[j].id;
-        divTasks.classList.add('tasks');
-        divTasks.classList.add(borderColorClass);
-
-        const nameAndPriority = document.createElement('div');
-        nameAndPriority.classList.add('name-and-priority');
-
-        const checkbox = document.createElement('div');
-
-        nameAndPriority.appendChild(checkbox);
-
-        const name = document.createElement('div');
-        name.textContent = complitedTasks[j].name;
-        name.classList.add('name');
-
-        nameAndPriority.appendChild(name);
-
-        divTasks.appendChild(nameAndPriority);
-
-        const deleteDiv = document.createElement('div');
-        deleteDiv.classList.add('delete');
-
-        const viewMoreBtn = document.createElement('button');
-        viewMoreBtn.classList.add('viewMoreBtnComplited');
-        viewMoreBtn.textContent = 'view more';
-        viewMoreBtn.dataset.id = complitedTasks[j].id;
-
-        deleteDiv.appendChild(viewMoreBtn);
-
-        const deleteBtn = document.createElement('span');
-        deleteBtn.classList.add('material-icons');
-        deleteBtn.textContent = 'delete';
-        deleteBtn.classList.add('complitedTasksDeleteButton');
-        deleteBtn.dataset.id = complitedTasks[j].id;
-
-        deleteDiv.appendChild(deleteBtn);
-
-        const priority = document.createElement('div');
-        priority.classList.add('priority');
-    
-        divTasks.appendChild(deleteDiv);
-
-        manyProjects.appendChild(divTasks);
-
-        projectsContent.appendChild(manyProjects);
-
-    }
-}
-
 const bgFive = document.querySelector('.bgFive');
 const deleteTasksTwo = document.querySelector('.deleteTasksTwo');
 const cancelTwo = document.querySelector('.cancelTwo');
@@ -568,11 +567,11 @@ const complitedTasksDelete = (complitedTasks, id) => {
             }
         }
 
-        complitedDiv();
+        complitedDiv(complitedTasks, nowProject);
 
         bgFive.classList.add('visiblity');
 
-        window.localStorage.setItem('newArr', JSON.stringify(newArr));
+        localStorage.setItem('newArr', JSON.stringify(newArr));
     })
 }
 
@@ -690,7 +689,7 @@ const editButtons = (newArr, id) => {
                         createDiv(newArr, nowProject);
                     }
         
-                    window.localStorage.setItem('newArr', JSON.stringify(newArr));
+                    localStorage.setItem('newArr', JSON.stringify(newArr));
         
                     test = 0;
                     testTwo = 0;
@@ -712,7 +711,28 @@ document.addEventListener('click', (e) => {
     }
 })
 
-const addDiv = (indexMainOne, indexMainTwo) => {
+const addToPageNameProject = (newArr) => {
+    root.textContent = '';
+    
+    for(let i = 1; i < newArr.length; i++){
+        if(newArr[i].name == 'inbox'){
+
+        }else{
+            const p = document.createElement('p');
+            p.classList.add('projectsNameInPage');
+            p.textContent = newArr[i].name;
+            nowProject = newArr[i].name;
+
+            if(p.textContent){
+                root.appendChild(p);
+            }
+        }
+    }
+
+    projectsNameInPage = document.querySelectorAll('.projectsNameInPage');
+}
+
+const addDiv = (newArr, indexMainOne, indexMainTwo) => {
     const moreContent = document.createElement('div');
     moreContent.classList.add('moreContent');
 
@@ -765,26 +785,6 @@ const addDiv = (indexMainOne, indexMainTwo) => {
     document.body.appendChild(bgThree);
 }
 
-const addToPageNameProject = (newArr) => {
-    root.textContent = '';
-    
-    for(let i = 1; i < newArr.length; i++){
-        if(newArr[i].name == 'inbox'){
-
-        }else{
-            const p = document.createElement('p');
-            p.classList.add('projectsNameInPage');
-            p.textContent = newArr[i].name;
-            nowProject = newArr[i].name;
-
-            if(p.textContent){
-                root.appendChild(p);
-            }
-        }
-    }
-
-    projectsNameInPage = document.querySelectorAll('.projectsNameInPage');
-}
 
 const expand_less_more = () => {
     if(more.textContent == 'expand_more'){
